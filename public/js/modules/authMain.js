@@ -1,11 +1,21 @@
+/**
+ * Centraliza la inicialización de todos los formularios relacionados con usuarios.
+ * Se carga como type="module" en el layout principal.
+ */
 import { initLogin } from "./auth/formLogin.js";
 import { initRegister } from "./auth/formRegister.js";
 import { initForgotPassword } from "./auth/formForgotPassword.js";
-import {initResetPassword} from "./auth/formResetPassword.js"
-// Iniciamos cada funcionalidad de forma independiente
+import { initResetPassword } from "./auth/formResetPassword.js";
+
+// Esperamos a que el DOM esté completamente cargado para evitar errores de referencia
 document.addEventListener("DOMContentLoaded", () => {
-  initLogin();
-  initRegister();
-  initForgotPassword();
-  initResetPassword();
+    
+    // Inicializamos cada funcionalidad. 
+    // Cada módulo interno se encargará de verificar si su formulario existe en la vista actual.
+    initLogin();
+    initRegister();
+    initForgotPassword();
+    initResetPassword();
+
+    console.log("Auth module initialized successfully.");
 });

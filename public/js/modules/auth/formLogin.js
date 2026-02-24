@@ -1,38 +1,49 @@
+/**
+ * Gestiona el inicio de sesión mediante AJAX.
+ * Implementa una técnica de captura de errores robusta para detectar fallos en PHP.
+ */
 import { handleAlert } from "../../services/ui.js";
 
 export function initLogin() {
-  const form = document.getElementById("loginForm");
+    const form = document.getElementById("loginForm");
 
-  // Si el formulario no existe en la página actual, salimos para evitar errores
-  if (!form) return;
+    // "Early return" para evitar errores si el script se carga en otra página
+    if (!form) return;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    const formData = new FormData(form);
+        const formData = new FormData(form);
 
-    try {
-      const response = await fetch("?url=auth", {
-        method: "POST",
-        body: formData,
-      });
+        try {
+            // Apuntamos a 'authenticate', que es el nombre que definimos en el Router
+            const response = await fetch("?url=authenticate", {
+                method: "POST",
+                body: formData,
+            });
 
-      // Usamos .text() primero por si hay errores de PHP (como hicimos antes)
-      const text = await response.text();
+            /**
+             * Obtenemos la respuesta como texto plano primero.
+             * Esto es una red de seguridad: si PHP envía un error de sistema (HTML),
+             * el JSON.parse fallaría, pero aquí podremos ver qué pasó exactamente.
+             */
+            const text = await response.text();
 
-      try {
-        const data = JSON.parse(text);
-        // Si el login es OK, data.redirect enviará al alumno a su panel
-        handleAlert(data.status, data.message, data.redirect);
-      } catch (err) {
-        console.error("Respuesta no JSON:", text);
-        handleAlert("error", "Error en la respuesta del servidor.");
-      }
-    } catch (error) {
-      handleAlert(
-        "error",
-        "No se pudo conectar con el servidor de autenticación.",
-      );
-    }
-  });
+            try {
+                const data = JSON.parse(text);
+                
+                // Si las credenciales son válidas, handleAlert procesará la redirección
+                handleAlert(data.status, data.message, data.redirect);
+
+            } catch (err) {
+                // Si llegamos aquí, PHP devolvió algo que NO es JSON (posible error de sintaxis)
+                console.error("Server response was not JSON:", text);
+                handleAlert("error", "The server returned an invalid response. Check the console.");
+            }
+
+        } catch (error) {
+            console.error("Connection Error:", error);
+            handleAlert("error", "Could not connect to the authentication server.");
+        }
+    });
 }
