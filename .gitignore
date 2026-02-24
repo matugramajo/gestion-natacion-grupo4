@@ -1,0 +1,13 @@
+# Entorno y Secretos
+.env
+
+# Dependencias (si usaran Composer más adelante)
+/vendor/
+
+# Archivos de Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+error_log
+*.log
