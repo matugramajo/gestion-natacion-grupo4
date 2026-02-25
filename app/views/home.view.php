@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/layout/header.php'; ?>
+<?php include __DIR__ . '/users/layout/header.php'; ?>
 
 <div class="bg-white p-5 rounded shadow-sm">
     <h1>Bienvenido, Profe</h1>
@@ -16,4 +16,4 @@
     </div>
 </div>
 
-<?php include __DIR__ . '/layout/footer.php'; ?>
+<?php include __DIR__ . '/users/layout/footer.php'; ?>

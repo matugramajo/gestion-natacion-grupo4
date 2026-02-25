@@ -19,10 +19,17 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 
-try {
+/* try {
      $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
      // En producción, es mejor loguear el error y mostrar un mensaje genérico
      error_log($e->getMessage());
      die("Error de conexión a la base de datos.");
+} */
+
+     try {
+     $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+     // Esto nos va a decir exactamente qué falla:
+     die("Error real: " . $e->getMessage() . " | DSN usado: " . $dsn);
 }

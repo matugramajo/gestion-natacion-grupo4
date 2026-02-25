@@ -1,4 +1,6 @@
-<?php include __DIR__ . '/../layout/header.php'; ?><div class="container mt-5">
+<?php include __DIR__ . '/../users/layout/header.php'; ?>
+
+<div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
 
@@ -14,7 +16,7 @@
                         contraseña.
                     </p>
 
-                    <form id="forgotForm" action="?url=send-reset" method="POST">
+                    <form id="formForgotPassword" action="?url=send-reset" method="POST">
 
                         <div class="mb-3">
                             <label class="form-label">Email registrado</label>
@@ -39,6 +41,5 @@
 
         </div>
     </div>
-</div><?php include __DIR__ . '/../layout/footer.php'; ?>
-
-<script type="module" src="js/modules/auth/auth.js"></script>
+</div>
+<?php include __DIR__ . '/../users/layout/footer.php'; ?>

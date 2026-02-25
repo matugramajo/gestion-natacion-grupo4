@@ -1,62 +1,85 @@
 <?php
 
-
 /**
- * EL ENRUTADOR (ROUTER)
- * Este archivo actúa como el "director de tráfico". Recibe la URL y decide
- * qué controlador y qué método deben ejecutarse.
- */
+* EL ENRUTADOR ( ROUTER ) - Front Controller Pattern
+* * Este archivo es el único punto de entrada a la lógica del servidor.
+* Su función es leer la intención del usuario ( vía URL ) y delegar el
+* trabajo al controlador correspondiente.
+*/
 
+// Cargamos el núcleo del sistema una sola vez
 require_once __DIR__ . '/../app/config/db.php';
 require_once __DIR__ . '/../app/core/Env.php';
 require_once __DIR__ . '/../app/core/BaseController.php';
 
-// Capturamos la ruta actual, por defecto es 'home'
-$route = $_GET['url'] ?? 'home';
+/**
+* 1. CAPTURA DE LA INTENCIÓN
+* Usamos el parámetro 'url' definido en el .htaccess o pasado por GET.
+* Si no hay ruta ( página de inicio ), por defecto vamos a 'home'.
+*/
+$route = $_GET[ 'url' ] ?? 'home';
 
-// El switch nos permite evaluar la ruta y ejecutar la acción correspondiente
-switch ($route) {
-    
+/**
+* 2. DESPACHO DE RUTAS ( DISPATCHER )
+* El switch actúa como una tabla de decisiones.
+*/
+switch ( $route ) {
+
+    // --- VISTA PRINCIPAL ---
     case 'home':
-        // El listado principal de nadadores
-        require_once __DIR__ . '/../app/controllers/HomeController.php';
-        (new HomeController())->index();
-        break;
+    // Aquí mostramos el panel principal ( dashboard ) con la lista de nadadores
+    require_once __DIR__ . '/../app/controllers/HomeController.php';
+    ( new HomeController() )->index();
+    break;
 
-    // AGRUPACIÓN: Todas las rutas de gestión de acceso y usuarios
+    // --- MÓDULO DE USUARIOS Y AUTENTICACIÓN ---
+    // Agrupamos rutas relacionadas para evitar repetir el require_once
     case 'login':
-    case 'authenticate': 
+    case 'authenticate':
     case 'register':
     case 'forgot-password':
     case 'send-reset':
     case 'reset-password':
     case 'update-password':
-        require_once __DIR__ . '/../app/controllers/UserController.php';
-        $controller = new UserController();
-        
-        // Mapeo dinámico de rutas a los nuevos nombres de métodos
-        if ($route === 'login')           $controller->showLogin();
-        if ($route === 'authenticate')    $controller->authenticate();
-        if ($route === 'register')        $controller->register();
-        if ($route === 'forgot-password') $controller->forgotPassword();
-        if ($route === 'send-reset')      $controller->sendReset();
-        // Nota: Agregamos lógica para reset-password cuando estemos listos
-        if ($route === 'update-password') $controller->updatePassword();
-        break;
+    require_once __DIR__ . '/../app/controllers/UserController.php';
+    $controller = new UserController();
 
+    /**
+    * Ejecución del método según la acción solicitada.
+    * Separamos la visualización ( GET ) de la lógica de procesamiento ( POST ).
+    */
+    if ( $route === 'login' )           $controller->showLogin();
+    if ( $route === 'authenticate' )    $controller->authenticate();
+    if ( $route === 'register' )        $controller->register();
+    if ( $route === 'forgot-password' ) $controller->forgotPassword();
+    if ( $route === 'send-reset' )      $controller->sendReset();
+    if ( $route === 'reset-password' )  $controller->showResetForm();
+    if ( $route === 'update-password' ) $controller->updatePassword();
+    break;
+
+    // --- SEGURIDAD: CIERRE DE SESIÓN ---
     case 'logout':
-        /**
-         * Lógica de cierre de sesión:
-         * Limpiamos la memoria y redirigimos al login.
-         */
-        session_start();
-        session_destroy();
-        header('Location: ?url=login');
-        exit; // Siempre usamos exit después de un redirect por seguridad
+    /**
+    * Para destruir una sesión, primero debemos estar seguros de que
+    * el sistema sabe de su existencia ( iniciada previamente en index.php ).
+    */
+    $_SESSION = [];
+    // Vaciamos el array de sesión por seguridad
+    session_destroy();
+    // Eliminamos el archivo de sesión en el servidor
 
+    // Redirigimos al Login para forzar una nueva autenticación
+    header( 'Location: ?url=login' );
+    exit;
+    // Detenemos el script para asegurar la redirección
+
+    // --- MANEJO DE ERRORES ---
     default:
-        // Manejo de errores 404 para rutas inexistentes
-        http_response_code(404);
-        echo '404 - Página no encontrada. Verifica la URL en el Router.';
-        break;
+    /**
+    * Si el usuario intenta acceder a una ruta que no definimos arriba,
+    * devolvemos un código de estado 404 ( Not Found ).
+    */
+    http_response_code( 404 );
+    echo 'Error 404: La página "' . htmlspecialchars( $route ) . '" no existe en este sistema.';
+    break;
 }

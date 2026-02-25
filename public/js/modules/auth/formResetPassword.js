@@ -5,7 +5,7 @@
 import { handleAlert } from '../../services/ui.js';
 
 export function initResetPassword() {
-    const form = document.getElementById('resetPasswordForm');
+    const form = document.getElementById('formResetPassword');
     
     // Verificamos presencia del formulario para evitar errores en otras vistas
     if (!form) return;

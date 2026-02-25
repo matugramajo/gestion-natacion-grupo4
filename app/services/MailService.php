@@ -1,7 +1,7 @@
 <?php
-require_once ROOT . '/app/services/PHPMailer/src/Exception.php';
-require_once ROOT . '/app/services/PHPMailer/src/PHPMailer.php';
-require_once ROOT . '/app/services/PHPMailer/src/SMTP.php';
+require_once __DIR__ . '/../libs/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../libs/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../libs/PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -24,7 +24,7 @@ class MailService
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = Env::get( 'MAIL_PORT' );
 
-            $mail->setFrom(Env::get('MAIL_FROM_ADDRESS'), 'Soporte Escuela de Natación');
+            $mail->setFrom( Env::get( 'MAIL_FROM_ADDRESS' ), 'Soporte Escuela de Natación' );
             //$mail->setFrom( 'lic.juanpablocesarini@gmail.com', 'Escuela de Natación' );
             $mail->addAddress( $toEmail );
 
@@ -32,8 +32,8 @@ class MailService
             $mail->CharSet = 'UTF-8';
             $mail->Subject = 'Recuperación de contraseña';
 
-            // Definí el link bien limpio antes
-            $resetLink = rtrim( BASE_URL, '/' ) . '/auth/reset?token=' . $token;
+            $baseUrl = Env::get( 'BASE_URL' );
+            $resetLink = rtrim( $baseUrl, '/' ) . '/index.php?url=reset-password&token=' . $token;
 
             // Armamos el Body con un formato más robusto
             $mail->Body = "
@@ -51,7 +51,7 @@ class MailService
             </p>
             
             <div style='margin: 30px 0;'>
-                <a href='{$link}' style='background-color: {$colorPrincipal}; color: #ffffff; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;'>
+                <a href='{$resetLink}' style='background-color: {$colorPrincipal}; color: #ffffff; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;'>
                     Restablecer Contraseña
                 </a>
             </div>
@@ -70,9 +70,9 @@ class MailService
     </div>
 </div>
 ";
-            // $mail->SMTPDebug = 3;
+           // $mail->SMTPDebug = 3;
             // Nivel 3 es más detallado
-            //$mail->Debugoutput = 'html';
+         //   $mail->Debugoutput = 'html';
             // Para que se vea bien en el navegador
             $mail->send();
             return true;

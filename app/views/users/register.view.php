@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../layout/header.php'; ?>
+<?php include __DIR__ . '/../users/layout/header.php'; ?>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -11,15 +11,15 @@
                     <form id="formRegister" action="?url=register" method="POST">
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" required>
+                            <input type="text" name="nombre" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Apellido</label>
-                            <input type="text" name="apellido" class="form-control" required>
+                            <input type="text" name="apellido" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Correo Electrónico</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <input type="email" name="email" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Teléfono</label>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Contraseña (min. 6 caracteres)</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <input type="password" name="password" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Registrarse</button>
                     </form>
@@ -39,6 +39,4 @@
         </div>
     </div>
 </div>
-<?php include __DIR__ . '/../layout/footer.php'; ?>
-
-<script type="module" src="js/modules/auth/auth.js"></script>
+<?php include __DIR__ . '/../users/layout/footer.php'; ?>

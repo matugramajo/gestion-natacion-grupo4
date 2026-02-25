@@ -5,7 +5,7 @@
 import { handleAlert } from "../../services/ui.js";
 
 export function initForgotPassword() {
-    const form = document.getElementById("forgotForm");
+    const form = document.getElementById("formForgotPassword");
     
     // Si el formulario no existe en la vista actual, salimos para evitar errores
     if (!form) return;

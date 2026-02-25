@@ -37,15 +37,15 @@ class UserController extends BaseController {
     }
 
     public function showLogin() {
-        $this->render( 'users/login' );
+        $this->render( 'users/login.view' );
     }
 
     public function showRegister() {
-        $this->render( 'users/register', [ 'title' => 'Inscripción de Alumnos' ] );
+        $this->render( 'users/register.view', [ 'title' => 'Inscripción de Alumnos' ] );
     }
 
     public function forgotPassword() {
-        $this->render( 'users/forgot-password', [ 'title' => 'Recuperar Contraseña' ] );
+        $this->render( 'users/forgot-password.view', [ 'title' => 'Recuperar Contraseña' ] );
     }
 
     // --- SECCIÓN: PROCESAMIENTO DE DATOS ( POST ) ---
@@ -104,7 +104,7 @@ class UserController extends BaseController {
             $userId = $this->userModel->create( [
                 'email'    => $f[ 'email' ],
                 'password' => $f[ 'password' ],
-                'role_id'  => 3 // Alumno
+                'role_id'  => 3 //
             ] );
 
             if ( !$userId ) throw new Exception( 'Error al crear credenciales.' );
@@ -139,7 +139,7 @@ class UserController extends BaseController {
         $user = $this->userModel->login( $email, $pass );
 
         if ( $user ) {
-            session_start();
+
             $_SESSION[ 'user_id' ] = $user[ 'id' ];
             $_SESSION[ 'role_id' ] = $user[ 'role_id' ];
             $_SESSION[ 'email' ]   = $user[ 'email' ];
@@ -165,15 +165,78 @@ class UserController extends BaseController {
             $token = bin2hex( random_bytes( 32 ) );
             $expires = date( 'Y-m-d H:i:s', strtotime( '+1 hour' ) );
 
+            // Guardamos el token en la DB
             $this->userModel->savePasswordToken( $email, $token, $expires );
 
-            // Llamada al servicio de mail ( suponiendo que existe )
-            // MailService::sendRecovery( $email, $token );
+            // --- LLAMADA AL SERVICIO DE MAIL ---
+            require_once __DIR__ . '/../services/MailService.php';
+            $mailService = new MailService();
+
+            // Usamos un try-catch o verificamos el retorno
+            $enviado = $mailService->sendEmailResetPassword( $email, $token );
+
+            if ( !$enviado ) {
+                return $this->json( 'error', 'El servidor de correo falló.' );
+            }
         }
 
-        return $this->json( 'success', 'Si el correo existe, recibirás un enlace.', '?url=login' );
+        // Por seguridad, siempre devolvemos éxito para no dar pistas de mails existentes
+        return $this->json( 'success', 'Si el correo existe, recibirás un enlace de recuperación.', '?url=login' );
     }
 
+    // Muestra el formulario donde el usuario escribe su nueva clave
+
+    public function showResetForm() {
+        $token = $_GET[ 'token' ] ?? '';
+
+        if ( empty( $token ) ) {
+            die( 'Error: El token de recuperación ha expirado o es inválido.' );
+        }
+
+        // Renderizamos la vista pasando el token para que el formulario sepa a quién actualizar
+        $this->render( 'users/reset-password.view', [
+            'title' => 'Restablecer Contraseña',
+            'token' => $token
+        ] );
+    }
+
+    // Procesa el cambio físico de la contraseña en la DB
+
+   public function updatePassword() {
+    $token    = $_POST['token'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if (empty($token) || strlen($password) < 6) {
+        return $this->json('warning', 'La contraseña debe tener al menos 6 caracteres.');
+    }
+
+    // 1. Validamos el token y obtenemos el email asociado
+    $resetRequest = $this->userModel->validateToken($token);
+
+    if ($resetRequest) {
+        $email = $resetRequest['email'];
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        try {
+            $this->pdo->beginTransaction();
+
+            // 2. Actualizamos la contraseña en la tabla users
+            $this->userModel->updatePasswordByEmail($email, $hashedPassword);
+
+            // 3. Borramos el token para que no se pueda volver a usar
+            $this->userModel->deleteToken($token);
+
+            $this->pdo->commit();
+            return $this->json('success', '¡Contraseña actualizada con éxito!', '?url=login');
+
+        } catch (Exception $e) {
+            $this->pdo->rollBack();
+            return $this->json('error', 'No se pudo actualizar la contraseña.');
+        }
+    }
+
+    return $this->json('error', 'El enlace es inválido o ha expirado.');
+}
     /**
     * Helper para validación de campos vacíos.
     */

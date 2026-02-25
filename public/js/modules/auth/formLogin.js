@@ -5,7 +5,7 @@
 import { handleAlert } from "../../services/ui.js";
 
 export function initLogin() {
-    const form = document.getElementById("loginForm");
+    const form = document.getElementById("formLogin");
 
     // "Early return" para evitar errores si el script se carga en otra página
     if (!form) return;
