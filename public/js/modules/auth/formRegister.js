@@ -1,21 +1,43 @@
 /**
- * Gestiona el alta de nuevos alumnos mediante AJAX.
- * Este módulo se comunica con la lógica de transacciones del UserController.
+ * Gestión del alta de alumnos mediante AJAX.
+ * Este módulo captura los datos del formulario, valida archivos en el cliente
+ * y los envía al controlador mediante la API Fetch.
  */
 import { handleAlert } from "../../services/ui.js";
 
 export function initRegister() {
   const form = document.getElementById("formRegister");
-  console.log("Formulario de registro detectado");
-  // Si no estamos en la vista de registro, abortamos la ejecución
+  
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("Submit interceptado"); // <-- Y este otro
+
     /**
-     * FormData es ideal para los alumnos: captura todos los campos del
-     * formulario basándose en el atributo 'name' de los inputs.
+     * Capturamos el archivo de imagen para validarlo antes de enviarlo.
+     * Es una buena práctica para ahorrar ancho de banda y no saturar el servidor
+     * con archivos que no cumplen los requisitos.
+     */
+    const fileInput = form.querySelector('input[name="profile_image"]');
+    const file = fileInput ? fileInput.files[0] : null;
+
+    if (file) {
+      // Validamos que el formato sea exclusivamente de imagen
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!allowedTypes.includes(file.type)) {
+        return handleAlert("error", "Formato no válido. Solo se permiten imágenes JPG, PNG o GIF.");
+      }
+
+      // Validamos que el tamaño no exceda los 2MB para optimizar el almacenamiento
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        return handleAlert("warning", "La imagen es muy pesada. El límite es de 2MB.");
+      }
+    }
+
+    /**
+     * FormData empaqueta automáticamente todos los campos del formulario,
+     * incluyendo los archivos (files), siempre que el input tenga el atributo 'name'.
      */
     const formData = new FormData(form);
 
@@ -25,30 +47,21 @@ export function initRegister() {
         body: formData,
       });
 
-      // Obtenemos la respuesta como texto para depuración (debug)
       const text = await response.text();
 
       try {
         const data = JSON.parse(text);
-
-        /**
-         * El servidor puede responder:
-         * - 'success': Todo OK, redirige al login.
-         * - 'warning': Faltan datos o pass muy corta.
-         * - 'user_exists': El email ya está en la base de datos.
-         */
+        
+        // El servidor retornará el status (success, error, warning) y el mensaje
         handleAlert(data.status, data.message, data.redirect);
       } catch (err) {
-        // Si PHP falla (ej: error de SQL), lo veremos aquí
-        console.error("Non-JSON response during registration:", text);
-        handleAlert(
-          "error",
-          "The registration process encountered a server-side error.",
-        );
+        // En caso de un error crítico de PHP (Fatal Error), la respuesta no será un JSON válido
+        console.error("Respuesta inesperada del servidor:", text);
+        handleAlert("error", "Error crítico en el servidor. Revisar consola de red.");
       }
     } catch (error) {
-      console.error("Network Error:", error);
-      handleAlert("error", "Could not connect to the server for registration.");
+      console.error("Error en la conexión Fetch:", error);
+      handleAlert("error", "No se pudo establecer conexión con el servidor.");
     }
   });
 }

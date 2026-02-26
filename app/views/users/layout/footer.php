@@ -8,7 +8,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script type="module" src=" <?= Env::get('BASE_URL') ?>/js/modules/authMain.js"></script>
+<script type="module" src="<?= rtrim(Env::get('BASE_URL'), '/') ?>/js/modules/authMain.js"></script>
 </body>
 
 </html>

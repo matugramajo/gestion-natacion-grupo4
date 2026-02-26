@@ -11,7 +11,6 @@ class User {
 
     /**
     * Busca un usuario por email.
-    * Reemplaza a 'exists' y 'findByEmail' antiguo.
     * @return array|bool Retorna los datos del usuario o false si no existe.
     */
 
@@ -46,10 +45,20 @@ class User {
     */
 
     public function login( $email, $password ) {
-        $user = $this->findByEmail( $email );
+        // Traemos los datos de users y los datos de perfil de swimmers
+        $sql = "SELECT u.*, s.first_name, s.profile_image 
+            FROM users u
+            LEFT JOIN swimmers s ON u.id = s.user_id 
+            WHERE u.email = ? AND u.deleted_at IS NULL 
+            LIMIT 1";
+
+        $stmt = $this->db->prepare( $sql );
+        $stmt->execute( [ $email ] );
+        $user = $stmt->fetch( PDO::FETCH_ASSOC );
 
         if ( $user && password_verify( $password, $user[ 'password' ] ) ) {
             return $user;
+            // Retorna el array con email, role_id, first_name y profile_image
         }
         return false;
     }
