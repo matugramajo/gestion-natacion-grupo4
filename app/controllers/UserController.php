@@ -163,7 +163,7 @@ class UserController extends BaseController {
 
             // 2. Si por algún error el .env está vacío, fallamos con una base segura
             if ( empty( $baseUrl ) ) {
-                $baseUrl = 'http://localhost/gestion-natacion';
+                $baseUrl = 'http://localhost/gestion-natacion-grupo4';
             }
 
             // 3. Construimos la URL final

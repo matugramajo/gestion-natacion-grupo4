@@ -19,8 +19,8 @@ Para correr este proyecto localmente, necesitarás:
 2. **Base de Datos:**
    * Abrí el **XAMPP Control Panel** e iniciá Apache y MySQL.
    * Entrá a **phpMyAdmin** (botón Admin de MySQL).
-   * Creá la base de datos `swimming_pool`.
-   * Importá el archivo ubicado en `database/swimming_pool.sql`.
+   * Creá la base de datos `swimming_pool_grupo4`.
+   * Importá el archivo ubicado en `database/swimming_pool_grupo4.sql`.
    * **Nota:** Verificá que la tabla `password_resets` incluya la columna `expires_at`.
 
 3. **Variables de Entorno (.env):**
