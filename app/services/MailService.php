@@ -77,9 +77,7 @@ class MailService
             $mail->send();
             return true;
         } catch ( Exception $e ) {
-            //error_log( $e->getMessage() );
-            echo 'Error de PHPMailer: ' . $mail->ErrorInfo;
-            die();
+            error_log( 'PHPMailer: ' . $mail->ErrorInfo . ' | ' . $e->getMessage() );
             return false;
         }
     }

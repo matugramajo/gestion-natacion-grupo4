@@ -226,7 +226,11 @@ class UserController extends BaseController {
             $token = bin2hex( random_bytes( 32 ) );
             $expires = date( 'Y-m-d H:i:s', strtotime( '+1 hour' ) );
 
-            $this->userModel->savePasswordToken( $email, $token, $expires );
+            $tokenSaved = $this->userModel->savePasswordToken( $email, $token, $expires );
+
+            if ( !$tokenSaved ) {
+                return $this->json( 'error', 'No se pudo generar el token de recuperación.' );
+            }
 
             require_once __DIR__ . '/../services/MailService.php';
             $mailService = new MailService();
