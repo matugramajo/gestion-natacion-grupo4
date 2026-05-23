@@ -15,7 +15,7 @@ class User {
     */
 
     public function findByEmail( $email ) {
-        $stmt = $this->db->prepare( 'SELECT * FROM users WHERE email = ? AND deleted_at IS NULL LIMIT 1' );
+        $stmt = $this->db->prepare( 'SELECT * FROM auth WHERE email = ? AND deleted_at IS NULL LIMIT 1' );
         $stmt->execute( [ $email ] );
         return $stmt->fetch( PDO::FETCH_ASSOC );
     }
@@ -32,7 +32,7 @@ class User {
         // Usamos el role_id del array, o 3 ( Swimmer ) por defecto si no viene
         $roleId = $data[ 'role_id' ] ?? 3;
 
-        $stmt = $this->db->prepare( 'INSERT INTO users (email, password, role_id) VALUES (?, ?, ?)' );
+        $stmt = $this->db->prepare( 'INSERT INTO auth (email, password, role_id) VALUES (?, ?, ?)' );
 
         if ( $stmt->execute( [ $data[ 'email' ], $hash, $roleId ] ) ) {
             return $this->db->lastInsertId();
@@ -45,12 +45,12 @@ class User {
     */
 
     public function login( $email, $password ) {
-        // Traemos los datos de users y los datos de perfil de swimmers
-        $sql = "SELECT u.*, s.first_name, s.profile_image 
-            FROM users u
-            LEFT JOIN swimmers s ON u.id = s.user_id 
-            WHERE u.email = ? AND u.deleted_at IS NULL 
-            LIMIT 1";
+        // Traemos los datos de auth y los datos de perfil de swimmers
+        $sql = "SELECT a.*, p.first_name, p.last_name, p.profile_image
+        FROM auth a
+        INNER JOIN profiles p ON a.id = p.auth_id
+        WHERE a.email = ? AND a.deleted_at IS NULL
+        LIMIT 1";
 
         $stmt = $this->db->prepare( $sql );
         $stmt->execute( [ $email ] );
@@ -68,7 +68,7 @@ class User {
     */
 
     public function updatePasswordByEmail( $email, $hashedPassword ) {
-        $stmt = $this->db->prepare( 'UPDATE users SET password = ? WHERE email = ?' );
+        $stmt = $this->db->prepare( 'UPDATE auth SET password = ? WHERE email = ?' );
         return $stmt->execute( [ $hashedPassword, $email ] );
     }
 

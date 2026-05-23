@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../users/layout/header.php'; ?>
+<?php include __DIR__ . '/../auth/layout/header.php'; ?>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -13,7 +13,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nombre</label>
-                                    <input type="text" name="nombre" class="form-control" placeholder="Ej: Juan"
+                                    <input type="text" name="first_name" class="form-control" placeholder="Ej: Juan"
                                         required>
                                 </div>
                                 <div class="mb-3">
@@ -26,17 +26,25 @@
                                     <input type="password" name="password" class="form-control"
                                         placeholder="Mín. 6 caracteres" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" name="birth_date" class="form-control" required>
+                                </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Apellido</label>
-                                    <input type="text" name="apellido" class="form-control" placeholder="Ej: Pérez"
+                                    <input type="text" name="last_name" class="form-control" placeholder="Ej: Pérez"
                                         required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Teléfono</label>
-                                    <input type="text" name="telefono" class="form-control" placeholder="11 1234 5678">
+                                    <input type="text" name="phone" class="form-control" placeholder="11 1234 5678">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Confirmar Contraseña</label>
+                                    <input type="password" name="confirm_password" class="form-control" placeholder="Repetí tu contraseña" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Foto de Perfil</label>
@@ -59,4 +67,4 @@
         </div>
     </div>
 </div>
-<?php include __DIR__ . '/../users/layout/footer.php'; ?>
+<?php include __DIR__ . '/../auth/layout/footer.php'; ?>

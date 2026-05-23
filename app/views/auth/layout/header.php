@@ -28,7 +28,7 @@
                     <li class="nav-item d-flex align-items-center">
                         <?php 
                             $foto = $_SESSION['profile_image'] ?? 'default-profile.png';
-                            $rutaFoto = Env::get('ASSET_URL') . "/img/uploads/profiles/swimmers/" . $foto;
+                            $rutaFoto = Env::get('APP_URL') . "/img/uploads/profiles/swimmers/" . $foto;
                         ?>
                         <img src="<?= $rutaFoto ?>" alt="Perfil" class="profile-img-nav me-2">
 

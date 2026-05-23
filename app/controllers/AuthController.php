@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../core/BaseController.php';
-require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/Auth.php';
 require_once __DIR__ . '/../models/Swimmer.php';
 
-class UserController extends BaseController {
+class AuthController extends BaseController {
     private $userModel;
     private $swimmerModel;
     private $pdo;
@@ -37,15 +37,15 @@ class UserController extends BaseController {
     }
 
     public function showLogin() {
-        $this->render( 'users/login.view' );
+        $this->render( 'auth/login.view' );
     }
 
     public function showRegister() {
-        $this->render( 'users/register.view', [ 'title' => 'Inscripción de Alumnos' ] );
+        $this->render( 'auth/register.view', [ 'title' => 'Inscripción de Alumnos' ] );
     }
 
     public function forgotPassword() {
-        $this->render( 'users/forgot-password.view', [ 'title' => 'Recuperar Contraseña' ] );
+        $this->render( 'auth/forgot-password.view', [ 'title' => 'Recuperar Contraseña' ] );
     }
 
     // --- SECCIÓN: PROCESAMIENTO DE DATOS ( POST ) ---
@@ -62,11 +62,11 @@ class UserController extends BaseController {
 
         // 1. Recolección y Sanitización ( Evitamos espacios vacíos y basura )
         $fields = [
-            'first_name'    => trim( $_POST[ 'nombre' ] ?? '' ),
-            'last_name'     => trim( $_POST[ 'apellido' ] ?? '' ),
+            'first_name'    => trim( $_POST[ 'first_name' ] ?? '' ),
+            'last_name'     => trim( $_POST[ 'last_name' ] ?? '' ),
             'email'          => trim( $_POST[ 'email' ] ?? '' ),
             'password'       => $_POST[ 'password' ] ?? '',
-            'phone'          => trim( $_POST[ 'telefono' ] ?? '' ),
+            'phone'          => trim( $_POST[ 'phone' ] ?? '' ),
             'profile_image'  => 'default-profile.png' // Valor por defecto
         ];
 
@@ -95,7 +95,14 @@ class UserController extends BaseController {
             $extension = strtolower( pathinfo( $_FILES[ 'profile_image' ][ 'name' ], PATHINFO_EXTENSION ) );
             $allowed = [ 'jpg', 'jpeg', 'png', 'gif' ];
 
-            if ( in_array( $extension, $allowed ) ) {
+            $finfo = finfo_open( FILEINFO_MIME_TYPE );
+            $mimeType = finfo_file( $finfo, $_FILES['profile_image']['tmp_name'] );
+            finfo_close( $finfo );
+
+            $allowedMimes = [ 'image/jpeg', 'image/png', 'image/gif' ];
+
+            if ( in_array( $extension, $allowed ) && in_array( $mimeType, $allowedMimes ) ) {
+
 
                 // 1. Tomamos la inicial del nombre en minúscula
                 $initial = strtolower( substr( $fields[ 'first_name' ], 0, 1 ) );
@@ -145,15 +152,15 @@ class UserController extends BaseController {
             $this->pdo->beginTransaction();
 
             // Tabla: users
-            $userId = $this->userModel->create( [
+            $authId = $this->userModel->create( [
                 'email'    => $f[ 'email' ],
                 'password' => $f[ 'password' ],
                 'role_id'  => 3 // Rol Swimmer
             ] );
 
-            if ( !$userId ) throw new Exception( 'Error al crear credenciales.' );
+            if ( !$authId ) throw new Exception( 'Error al crear credenciales.' );
 
-            $f[ 'user_id' ] = $userId;
+            $f[ 'auth_id' ] = $authId;
             $this->swimmerModel->create( $f );
 
             $this->pdo->commit();
@@ -246,17 +253,23 @@ class UserController extends BaseController {
     }
 
     public function showResetForm() {
-        $token = $_GET[ 'token' ] ?? '';
+    $token = $_GET[ 'token' ] ?? '';
 
-        if ( empty( $token ) ) {
-            die( 'Error: El token de recuperación ha expirado o es inválido.' );
-        }
-
-        $this->render( 'users/reset-password.view', [
-            'title' => 'Restablecer Contraseña',
-            'token' => $token
-        ] );
+    if ( empty( $token ) ) {
+        die( 'Error: El token de recuperación ha expirado o es inválido.' );
     }
+
+    $resetRequest = $this->userModel->validateToken( $token );
+
+    if ( !$resetRequest ) {
+        die( 'Error: El token de recuperación ha expirado o es inválido.' );
+    }
+
+    $this->render( 'auth/reset-password.view', [
+        'title' => 'Restablecer Contraseña',
+        'token' => $token
+    ] );
+}
 
     public function updatePassword() {
         $token    = $_POST[ 'token' ] ?? '';
@@ -279,7 +292,7 @@ class UserController extends BaseController {
                 $this->userModel->deleteToken( $token );
 
                 $this->pdo->commit();
-                return $this->json( 'success', '¡Contraseña actualizada con éxito!', Env::get( 'APP_URL' ) . '?url=login' );
+                return $this->json( 'success', '¡Contraseña actualizada con éxito!', Env::get( 'APP_URL' ) . '/?url=login' );
 
             } catch ( Exception $e ) {
                 if ( $this->pdo->inTransaction() ) $this->pdo->rollBack();
