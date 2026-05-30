@@ -33,7 +33,7 @@ class AuthController extends BaseController {
         // Seguridad: si no hay sesión, al login.
 
         $swimmers = $this->swimmerModel->getAll();
-        $this->render( 'users/index', [ 'swimmers' => $swimmers ] );
+        $this->render( 'auth/index.view', [ 'swimmers' => $swimmers ] );
     }
 
     public function showLogin() {
