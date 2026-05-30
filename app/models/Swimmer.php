@@ -24,12 +24,11 @@ class Swimmer {
 
     /**
      * Inserta los datos personales vinculados a un user_id, incluyendo la imagen.
-     * @param array $data ['user_id', 'first_name', 'last_name', 'phone', 'profile_image']
+     * @param array $data ['auth_id', 'first_name', 'last_name', 'phone', 'birth_date', 'profile_image']
      */
     public function create(array $data) {
-        // Agregamos profile_image al INSERT
-        $sqlProfile = "INSERT INTO profiles (auth_id, first_name, last_name, phone, profile_image)
-               VALUES (?, ?, ?, ?, ?)";
+        $sqlProfile = "INSERT INTO profiles (auth_id, first_name, last_name, phone, profile_image, birth_date)
+               VALUES (?, ?, ?, ?, ?, ?)";
         $stmtProfile = $this->db->prepare( $sqlProfile );
         $profileOk = $stmtProfile->execute([
             $data['auth_id'],
@@ -37,6 +36,7 @@ class Swimmer {
             $data['last_name'],
             $data['phone']         ?? null,
             $data['profile_image'] ?? 'default-profile.png',
+            $data['birth_date']    ?? null,
         ]);
 
         if ( !$profileOk ) return false;

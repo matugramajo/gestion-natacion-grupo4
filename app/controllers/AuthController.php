@@ -67,6 +67,7 @@ class AuthController extends BaseController {
             'email'          => trim( $_POST[ 'email' ] ?? '' ),
             'password'       => $_POST[ 'password' ] ?? '',
             'phone'          => trim( $_POST[ 'phone' ] ?? '' ),
+            'birth_date'     => trim( $_POST[ 'birth_date' ] ?? '' ),
             'profile_image'  => 'default-profile.png' // Valor por defecto
         ];
 
@@ -77,6 +78,15 @@ class AuthController extends BaseController {
 
         if ( !filter_var( $fields[ 'email' ], FILTER_VALIDATE_EMAIL ) ) {
             return $this->json( 'error', 'El email ingresado no es válido.' );
+        }
+
+        if ( !$this->isValidBirthDate( $fields[ 'birth_date' ] ) ) {
+            return $this->json( 'warning', 'La fecha de nacimiento no es válida.' );
+        }
+
+        $confirmPassword = $_POST[ 'confirm_password' ] ?? '';
+        if ( $fields[ 'password' ] !== $confirmPassword ) {
+            return $this->json( 'warning', 'Las contraseñas no coinciden.' );
         }
 
         if ( strlen( $fields[ 'password' ] ) < 6 ) {
@@ -304,6 +314,24 @@ class AuthController extends BaseController {
     }
 
     private function hasEmptyFields( $f ) {
-        return empty( $f[ 'first_name' ] ) || empty( $f[ 'last_name' ] ) || empty( $f[ 'email' ] ) || empty( $f[ 'password' ] );
+        return empty( $f[ 'first_name' ] )
+            || empty( $f[ 'last_name' ] )
+            || empty( $f[ 'email' ] )
+            || empty( $f[ 'password' ] )
+            || empty( $f[ 'birth_date' ] );
+    }
+
+    private function isValidBirthDate( string $birthDate ): bool {
+        $date = \DateTime::createFromFormat( 'Y-m-d', $birthDate );
+        if ( !$date || $date->format( 'Y-m-d' ) !== $birthDate ) {
+            return false;
+        }
+
+        $today = new \DateTime( 'today' );
+        if ( $date > $today ) {
+            return false;
+        }
+
+        return true;
     }
 }
