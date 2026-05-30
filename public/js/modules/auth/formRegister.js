@@ -13,6 +13,12 @@ export function initRegister() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+  const password = form.querySelector('input[name="password"]').value;
+  const confirmPassword = form.querySelector('input[name="confirm_password"]').value;
+
+  if ( password !== confirmPassword ) {
+      return handleAlert( 'warning', 'Las contraseñas no coinciden.' );
+  }
     /**
      * Capturamos el archivo de imagen para validarlo antes de enviarlo.
      * Es una buena práctica para ahorrar ancho de banda y no saturar el servidor

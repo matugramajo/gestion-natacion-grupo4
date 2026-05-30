@@ -27,9 +27,13 @@ switch ( $route ) {
 
     // --- VISTA PRINCIPAL ---
     case 'home':
-    // Aquí mostramos el panel principal ( dashboard ) con la lista de nadadores
     require_once __DIR__ . '/../app/controllers/HomeController.php';
-    ( new HomeController() )->index();
+    $controller = new HomeController();
+    if ( !isset( $_SESSION['user_id'] ) ) {
+        $controller->landing();
+    } else {
+        $controller->index();
+    }
     break;
 
     // --- MÓDULO DE USUARIOS Y AUTENTICACIÓN ---
@@ -41,8 +45,8 @@ switch ( $route ) {
     case 'send-reset':
     case 'reset-password':
     case 'update-password':
-    require_once __DIR__ . '/../app/controllers/UserController.php';
-    $controller = new UserController();
+    require_once __DIR__ . '/../app/controllers/AuthController.php';
+    $controller = new AuthController();
 
     /**
     * Ejecución del método según la acción solicitada.
@@ -56,6 +60,14 @@ switch ( $route ) {
     if ( $route === 'reset-password' )  $controller->showResetForm();
     if ( $route === 'update-password' ) $controller->updatePassword();
     break;
+    
+    // --- MÓDULO DE NADADORES ---
+    case 'swimmers':
+    require_once __DIR__ . '/../app/controllers/AuthController.php';
+    ( new AuthController() )->index();
+    break;
+
+
 
     // --- SEGURIDAD: CIERRE DE SESIÓN ---
     case 'logout':

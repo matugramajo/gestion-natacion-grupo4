@@ -43,10 +43,10 @@ class BaseController {
     protected function json( $status, $message, $redirect = null ) {
         header( 'Content-Type: application/json' );
         echo json_encode( [
-            'status'   => $status,
-            'message'  => $message,
-            'redirect' => $redirect ?? Env::get('APP_URL') // Sin redirect, va al home
-        ] );
+        'status'   => $status,
+        'message'  => $message,
+        'redirect' => $redirect ?? Env::get('APP_URL')
+        ], JSON_UNESCAPED_SLASHES );
         exit;
         // Importante para cortar la ejecución aquí
     }
