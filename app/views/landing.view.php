@@ -104,14 +104,6 @@
             text-decoration: none;
         }
 
-        .btn-hero-sec {
-            color: #0b1120;
-            font-weight: 500;
-            text-decoration: none;
-            padding: 13px 24px;
-            border-radius: 10px;
-        }
-
         .hero-img {
             width: 100%;
             border-radius: 20px;
@@ -302,7 +294,6 @@
                 <p class="lead">Descubrí la escuela de natación que combina técnica profesional, instalaciones de primera clase y una plataforma intuitiva para gestionar tu progreso acuático.</p>
                 <div class="d-flex gap-3 flex-wrap">
                     <a href="?url=register" class="btn-hero-main">Empezar ahora →</a>
-                    <a href="?url=login" class="btn-hero-sec">Ingresar</a>
                 </div>
             </div>
             <div class="col-lg-6">
