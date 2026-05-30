@@ -22,7 +22,7 @@ class MailService
             $mail->Username   = Env::get( 'MAIL_USERNAME' );
             $mail->Password   = Env::get( 'MAIL_PASSWORD' );
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = Env::get( 'MAIL_PORT' );
+            $mail->Port = (int) $_ENV['MAIL_PORT'];
 
             $mail->setFrom( Env::get( 'MAIL_FROM' ), 'Soporte Escuela de Natación' );
             //$mail->setFrom( 'lic.juanpablocesarini@gmail.com', 'Escuela de Natación' );
