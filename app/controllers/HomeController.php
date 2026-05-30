@@ -21,4 +21,8 @@ class HomeController extends BaseController {
         // El método render busca automáticamente en /views/ y permite pasar datos
         $this->render('home.view', $data);
     }
+
+    public function landing() {
+    $this->render( 'landing.view' );
+}
 }

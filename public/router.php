@@ -28,7 +28,12 @@ switch ( $route ) {
     // --- VISTA PRINCIPAL ---
     case 'home':
     require_once __DIR__ . '/../app/controllers/HomeController.php';
-    ( new HomeController() )->index();
+    $controller = new HomeController();
+    if ( !isset( $_SESSION['user_id'] ) ) {
+        $controller->landing();
+    } else {
+        $controller->index();
+    }
     break;
 
     // --- MÓDULO DE USUARIOS Y AUTENTICACIÓN ---
