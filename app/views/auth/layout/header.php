@@ -48,6 +48,10 @@ if (
 
                     <?php if (isset($_SESSION['user_id'])): ?>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="?url=swimmers">Nadadores</a>
+                    </li>
+
                     <li class="nav-item d-flex align-items-center">
                         <?php
                             $foto = $_SESSION['profile_image'] ?? 'default-profile.png';
