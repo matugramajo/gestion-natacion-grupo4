@@ -45,20 +45,21 @@ class Auth {
     */
 
     public function login( $email, $password ) {
-        // Traemos los datos de auth y los datos de perfil de swimmers
-        $sql = "SELECT a.*, p.first_name, p.last_name, p.profile_image
-        FROM auth a
-        INNER JOIN profiles p ON a.id = p.auth_id
-        WHERE a.email = ? AND a.deleted_at IS NULL
-        LIMIT 1";
+        $sql = "SELECT a.*, p.first_name, p.last_name, p.profile_image, r.role_name
+                FROM auth a
+                LEFT JOIN profiles p ON a.id = p.auth_id
+                INNER JOIN roles r ON a.role_id = r.id
+                WHERE a.email = ? AND a.deleted_at IS NULL
+                LIMIT 1";
 
         $stmt = $this->db->prepare( $sql );
         $stmt->execute( [ $email ] );
         $user = $stmt->fetch( PDO::FETCH_ASSOC );
 
-        if ( $user && password_verify( $password, $user[ 'password' ] ) ) {
+        if ( $user && password_verify( $password, $user['password'] ) ) {
+            $user['first_name']    = $user['first_name'] ?? 'Usuario';
+            $user['profile_image'] = $user['profile_image'] ?? 'default-profile.png';
             return $user;
-            // Retorna el array con email, role_id, first_name y profile_image
         }
         return false;
     }
