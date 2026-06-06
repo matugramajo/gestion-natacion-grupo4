@@ -29,8 +29,7 @@ class AuthController extends BaseController {
     */
 
     public function index() {
-        $this->checkAuth();
-        // Seguridad: si no hay sesión, al login.
+        $this->checkRole( [ Role::ADMIN, Role::COACH ] );
 
         $swimmers = $this->swimmerModel->getAll();
         $this->render( 'auth/index.view', [ 'swimmers' => $swimmers ] );
@@ -214,15 +213,15 @@ class AuthController extends BaseController {
         $user = $this->userModel->login( $email, $pass );
 
         if ( $user ) {
-            $_SESSION[ 'user_id' ] = $user[ 'id' ];
-            $_SESSION[ 'role_id' ] = $user[ 'role_id' ];
-            $_SESSION[ 'email' ]   = $user[ 'email' ];
-            // Datos para el saludo y la foto que pide el nuevo layout
-            $_SESSION[ 'first_name' ]    = $user[ 'first_name' ];
+            session_regenerate_id( true );
+            $_SESSION['user_id']       = $user['id'];
+            $_SESSION['role_id']       = $user['role_id'];
+            $_SESSION['role_name']     = $user['role_name'] ?? Role::name( (int) $user['role_id'] );
+            $_SESSION['email']         = $user['email'];
+            $_SESSION['first_name']    = $user['first_name'];
+            $_SESSION['profile_image'] = $user['profile_image'];
 
-            $_SESSION[ 'profile_image' ] = $user[ 'profile_image' ];
-
-            return $this->json( 'success', '¡Bienvenido ' . $user[ 'first_name' ] . '!', Env::get( 'APP_URL' ) . '/?url=home' );
+            return $this->json( 'success', '¡Bienvenido ' . $user['first_name'] . '!', Env::get( 'APP_URL' ) . '/?url=home' );
         }
 
         return $this->json( 'error', 'Credenciales incorrectas.' );
@@ -284,9 +283,13 @@ class AuthController extends BaseController {
     public function updatePassword() {
         $token    = $_POST[ 'token' ] ?? '';
         $password = $_POST[ 'password' ] ?? '';
+        $confirm  = $_POST[ 'confirm_password' ] ?? '';
 
         if ( empty( $token ) || strlen( $password ) < 6 ) {
             return $this->json( 'warning', 'La contraseña debe tener al menos 6 caracteres.' );
+        }
+        if ( $password !== $confirm ) {
+            return $this->json( 'warning', 'Las contraseñas no coinciden.' );
         }
 
         $resetRequest = $this->userModel->validateToken( $token );
