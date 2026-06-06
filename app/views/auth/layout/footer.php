@@ -10,6 +10,16 @@
 
 <script type="module" src="<?= rtrim(Env::get('ASSET_URL'), '/') ?>/js/modules/authMain.js"></script>
 <script type="module" src="<?= rtrim(Env::get('ASSET_URL'), '/') ?>/js/modules/appMain.js"></script>
+
+<script>
+window.togglePassword = function(id) {
+    const input = document.getElementById(id);
+
+    if (!input) return;
+
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>
 </body>
 
 </html>

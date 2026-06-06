@@ -1,5 +1,4 @@
-<?php include __DIR__ . '/../auth/layout/header.php';
-?>
+<?php include __DIR__ . '/../auth/layout/header.php'; ?>
 
 <div class='container mt-5'>
     <div class='row justify-content-center'>
@@ -20,19 +19,50 @@
 
                         <input type='hidden' name='token' value="<?= htmlspecialchars($_GET['token'] ?? '') ?>">
 
-                        <div class='mb-3'>
-                            <label class='form-label'>Nueva contraseña</label>
-                            <input type='password' name='password' class='form-control'
-                                placeholder='Mínimo 6 caracteres' minlength='6' required>
+                        <!-- Nueva contraseña -->
+                        <div class="mb-3">
+                            <label class="form-label">Nueva contraseña</label>
+
+                            <div class="input-group">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="reset_pass"
+                                    class="form-control"
+                                    placeholder="Mínimo 6 caracteres"
+                                    minlength="6"
+                                    required>
+
+                                <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="togglePassword('reset_pass')">
+                                    👁
+                                </button>
+                            </div>
                         </div>
 
-                        <div class='mb-3'>
-                            <label class='form-label'>Confirmar contraseña</label>
-                            <input type='password' name='confirm_password' class='form-control'
-                                placeholder='Repetí tu contraseña' required>
+                        <!--  Confirmar contraseña -->
+                        <div class="mb-3">
+                            <label class="form-label">Confirmar contraseña</label>
+
+                            <div class="input-group">
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    id="reset_confirm"
+                                    class="form-control"
+                                    placeholder="Repetí tu contraseña"
+                                    required>
+
+                                <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="togglePassword('reset_confirm')">
+                                    👁
+                                </button>
+                            </div>
                         </div>
 
-                        <button type='submit' class='btn btn-success w-100 py-2'>
+                        <button type="submit" class='btn btn-success w-100 py-2'>
                             Actualizar contraseña
                         </button>
 
