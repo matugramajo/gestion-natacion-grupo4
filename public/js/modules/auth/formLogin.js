@@ -31,19 +31,32 @@ export function initLogin() {
 
             try {
                 const data = JSON.parse(text);
-                
+
                 // Si las credenciales son válidas, handleAlert procesará la redirección
-                handleAlert(data.status, data.message, data.redirect);
+                handleAlert(
+                    data.status,
+                    data.message,
+                    data.redirect,
+                    {
+                        silent: true
+                    }
+                );
 
             } catch (err) {
                 // Si llegamos aquí, PHP devolvió algo que NO es JSON (posible error de sintaxis)
                 console.error("Server response was not JSON:", text);
-                handleAlert("error", "The server returned an invalid response. Check the console.");
+                handleAlert(
+                    "error",
+                    "The server returned an invalid response. Check the console."
+                );
             }
 
         } catch (error) {
             console.error("Connection Error:", error);
-            handleAlert("error", "Could not connect to the authentication server.");
+            handleAlert(
+                "error",
+                "Could not connect to the authentication server."
+            );
         }
     });
 }

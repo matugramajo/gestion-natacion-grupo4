@@ -6,15 +6,28 @@ import { handleAlert } from "../../services/ui.js";
 
 export function initForgotPassword() {
     const form = document.getElementById("formForgotPassword");
-    
+
     // Si el formulario no existe en la vista actual, salimos para evitar errores
     if (!form) return;
 
+    // Capturamos el botón para poder bloquearlo mientras se procesa la solicitud
+    const submitBtn = form.querySelector('button[type="submit"]');
+
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
+
+        // Evitamos que se envíe más de una vez
+        if (submitBtn.disabled) return;
+
         // Empaquetamos los datos del formulario (el email en este caso)
         const formData = new FormData(form);
+
+        // Bloqueamos el botón mientras se procesa la solicitud
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Enviando...
+        `;
 
         try {
             /**
@@ -36,6 +49,13 @@ export function initForgotPassword() {
         } catch (error) {
             console.error("Recovery Error:", error);
             handleAlert("error", "No se pudo procesar la solicitud de recuperación.");
+        } finally {
+            /**
+             * Independientemente del resultado (éxito o error),
+             * restauramos el botón a su estado original.
+             */
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "Enviar enlace de recuperación";
         }
     });
 }
