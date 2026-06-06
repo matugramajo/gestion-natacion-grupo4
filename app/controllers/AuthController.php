@@ -17,7 +17,7 @@ class AuthController extends BaseController {
         $this->pdo = $pdo;
 
         // Inicializamos los modelos pasándoles la conexión única
-        $this->userModel = new User( $pdo );
+        $this->userModel = new Auth( $pdo );
         $this->swimmerModel = new Swimmer( $pdo );
     }
 

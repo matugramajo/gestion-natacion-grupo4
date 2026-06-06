@@ -67,6 +67,17 @@ switch ( $route ) {
     ( new AuthController() )->index();
     break;
 
+    // --- MÓDULO DE COACHES ---
+    case 'coaches':
+    case 'coaches/create':
+    case 'coaches/store':
+        require_once __DIR__ . '/../app/controllers/CoachController.php';
+        $controller = new CoachController();
+
+        if ( $route === 'coaches' )         $controller->index();
+        if ( $route === 'coaches/create' )  $controller->create();
+        if ( $route === 'coaches/store' )   $controller->store();
+        break;
 
 
     // --- SEGURIDAD: CIERRE DE SESIÓN ---

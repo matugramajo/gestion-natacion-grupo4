@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwimManager - Academia de natacion</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<?php include __DIR__ . '/auth/layout/header.php'; ?>
     <style>
-        .nav-landing {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            padding: 16px 0;
+        main {
+            padding-top: 0 !important;
         }
+        
 
         .nav-logo {
             display: flex;
@@ -55,7 +43,7 @@
 
         .hero {
             min-height: 100vh;
-            padding-top: 100px;
+            padding-top: 0px;
             background: linear-gradient(135deg, #e8f0fe 0%, #f0f9ff 50%, #e0f7fa 100%);
             display: flex;
             align-items: center;
@@ -216,7 +204,7 @@
             background: #fef9c3; color: #854d0e; 
         }
         .level-comp { 
-            background: #ff9883; color: #d23c1a; 
+            background: #f2ad9f; color: #d23c1a; 
         }
 
         .ver-todo {
@@ -265,25 +253,6 @@
             font-size: 14px;
         }
     </style>
-</head>
-<body>
-
-<nav class="nav-landing">
-    <div class="container d-flex align-items-center justify-content-between">
-        <a href="?url=home" class="nav-logo">
-            <svg width="34" height="22" viewBox="0 0 34 22" fill="none">
-                <path d="M2 14c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#1a6cf6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M2 19c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#0bc5c5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <circle cx="17" cy="7" r="2.5" fill="#1a6cf6"/>
-            </svg>
-            <span>Swim<em>Manager</em></span>
-        </a>
-        <div class="d-flex gap-2">
-            <a href="?url=login" class="btn-nav-login">Ingresar</a>
-            <a href="?url=register" class="btn-nav-register">Registrarse</a>
-        </div>
-    </div>
-</nav>
 
 <section class="hero">
     <div class="container">
@@ -390,13 +359,4 @@
         <a href="?url=register" class="btn-cta">Anotate al club</a>
     </div>
 </section>
-
-<footer class="footer-landing">
-    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <span>SwimManager &copy; <?= date('Y') ?> — Aplicaciones WEB</span>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include __DIR__ . '/auth/layout/footer.php'; ?>

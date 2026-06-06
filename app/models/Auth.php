@@ -1,6 +1,6 @@
 <?php
 
-class User {
+class Auth {
     private $db;
 
     public function __construct( $pdo ) {

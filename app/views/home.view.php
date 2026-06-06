@@ -1,7 +1,8 @@
 <?php include __DIR__ . '/auth/layout/header.php'; ?>
 
+
 <div class="bg-white p-5 rounded shadow-sm">
-    <h1>Bienvenido, Profe</h1>
+    <h1>Bienvenido/a, <?php echo htmlspecialchars( $_SESSION['first_name'] ?? 'Usuario' ); ?></h1>
     <p class="lead">Este es el panel administrativo de la escuela.</p>
     <hr>
     <div class="row">
