@@ -322,30 +322,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    $levelBadge = [ 1 => 'level-prin', 2 => 'level-inter', 3 => 'level-avanz', 4 => 'level-comp' ];
+                    $schedule = $schedule ?? [];
+                    if ( empty( $schedule ) ): ?>
+                    <tr><td colspan="4" class="text-center text-muted py-4">Próximamente publicaremos el cronograma.</td></tr>
+                    <?php else: foreach ( $schedule as $row ): ?>
                     <tr>
-                        <td><span class="level-badge level-prin">Principiante</span></td>
-                        <td>Lunes y Miércoles</td>
-                        <td>16:00 a 17:00</td>
-                        <td>Prof. Cami</td>
+                        <td>
+                            <span class="level-badge <?= $levelBadge[ (int) $row['level_id'] ] ?? 'level-prin' ?>">
+                                <?= htmlspecialchars( $row['level_name'] ) ?>
+                            </span>
+                        </td>
+                        <td><?= Lesson::dayLabel( $row['day_of_week'] ) ?></td>
+                        <td><?= substr( $row['start_time'], 0, 5 ) ?> a <?= substr( $row['end_time'], 0, 5 ) ?></td>
+                        <td>Prof. <?= htmlspecialchars( trim( ( $row['coach_first_name'] ?? '' ) . ' ' . ( $row['coach_last_name'] ?? '' ) ) ) ?></td>
                     </tr>
-                    <tr>
-                        <td><span class="level-badge level-inter">Intermedio</span></td>
-                        <td>Martes y Jueves</td>
-                        <td>17:00 a 18:00</td>
-                        <td>Prof. Martu</td>
-                    </tr>
-                    <tr>
-                        <td><span class="level-badge level-avanz">Avanzado</span></td>
-                        <td>Lunes a Viernes</td>
-                        <td>19:30 a 21:00</td>
-                        <td>Prof. Matu</td>
-                    </tr>
-                    <tr>
-                        <td><span class="level-badge level-comp">Competitivo</span></td>
-                        <td>Sabado</td>
-                        <td>9:00 a 10:00</td>
-                        <td>Prof. Juan</td>
-                    </tr>
+                    <?php endforeach; endif; ?>
                 </tbody>
             </table>
         </div>
@@ -359,4 +352,14 @@
         <a href="?url=register" class="btn-cta">Anotate al club</a>
     </div>
 </section>
-<?php include __DIR__ . '/auth/layout/footer.php'; ?>
+<footer class="footer-landing">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span>SwimManager &copy; <?= date('Y') ?> — Aplicaciones WEB</span>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module" src="<?= rtrim(Env::get('ASSET_URL'), '/') ?>/js/modules/landing.js"></script>
+</body>
+</html>
