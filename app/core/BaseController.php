@@ -1,5 +1,7 @@
 <?php
-// app/controllers/BaseController.php
+// app/core/BaseController.php
+
+require_once __DIR__ . '/Role.php';
 
 class BaseController {
 
@@ -12,15 +14,30 @@ class BaseController {
 
     protected function checkAuth() {
         if (!isset($_SESSION['user_id'])) {
-            // Si es una petición Fetch, mandamos JSON
             if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
                 $this->json('error', 'Sesión expirada', '?url=login');
             } else {
-                // Si es carga de página normal, redirección directa
                 header('Location: ?url=login');
                 exit;
             }
         }
+    }
+
+    protected function checkRole( array $allowedRoles ) {
+        $this->checkAuth();
+        $roleId = (int) ( $_SESSION['role_id'] ?? 0 );
+        if ( !in_array( $roleId, $allowedRoles, true ) ) {
+            if ( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) === 'xmlhttprequest' ) {
+                $this->json( 'error', 'No tenés permiso para esta acción.' );
+            }
+            http_response_code( 403 );
+            $this->render( 'errors/forbidden.view', [ 'titulo' => 'Acceso denegado' ] );
+            exit;
+        }
+    }
+
+    protected function currentRoleId(): int {
+        return (int) ( $_SESSION['role_id'] ?? 0 );
     }
     
     /**
