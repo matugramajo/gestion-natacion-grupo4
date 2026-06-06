@@ -10,9 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        body {
-            font-family: 'Outfit', sans-serif;
-        }
+        body { font-family: 'Outfit', sans-serif; }
 
         .nav-main {
             position: fixed;
@@ -69,10 +67,7 @@
             transition: all .2s;
         }
 
-        .btn-nav-login:hover {
-            background: #1a6cf6;
-            color: #fff;
-        }
+        .btn-nav-login:hover { background: #1a6cf6; color: #fff; }
 
         .btn-nav-register {
             background: #1a6cf6;
@@ -85,10 +80,7 @@
             transition: all .2s;
         }
 
-        .btn-nav-register:hover {
-            background: #0d4fd6;
-            color: #fff;
-        }
+        .btn-nav-register:hover { background: #0d4fd6; color: #fff; }
 
         .btn-nav-logout {
             border: 1.5px solid #e6e5eb;
@@ -102,10 +94,7 @@
             transition: all .2s;
         }
 
-        .btn-nav-logout:hover {
-            background: #0d4fd6;
-            color: #fff;
-        }
+        .btn-nav-logout:hover { background: #0d4fd6; color: #fff; }
 
         .profile-img-nav {
             width: 34px;
@@ -127,10 +116,11 @@
 
 <?php
 $url = $_GET['url'] ?? '';
-$hideNav = in_array($url, ['login', 'register', 'forgot-password', 'reset-password']);
+$hideNav = in_array( $url, [ 'login', 'register', 'forgot-password', 'reset-password' ], true );
+$roleId = (int) ( $_SESSION['role_id'] ?? 0 );
 ?>
 
-<?php if (!$hideNav): ?>
+<?php if ( !$hideNav ): ?>
 <nav class="nav-main">
     <div class="container d-flex align-items-center justify-content-between">
 
@@ -145,17 +135,28 @@ $hideNav = in_array($url, ['login', 'register', 'forgot-password', 'reset-passwo
 
         <div class="d-flex align-items-center gap-3">
 
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if ( isset( $_SESSION['user_id'] ) ): ?>
 
-                <a href="?url=swimmers" class="nav-link-item">Nadadores</a>
-                <a href="?url=coaches" class="nav-link-item">Profesores</a>
+                <a href="?url=home" class="nav-link-item">Dashboard</a>
+
+                <?php if ( $roleId === 1 ): ?>
+                    <a href="?url=swimmers" class="nav-link-item">Nadadores</a>
+                    <a href="?url=coaches" class="nav-link-item">Profesores</a>
+                    <a href="?url=admin-lessons" class="nav-link-item">Clases</a>
+                <?php elseif ( $roleId === 2 ): ?>
+                    <a href="?url=coach-students" class="nav-link-item">Mis alumnos</a>
+                    <a href="?url=coach-profile" class="nav-link-item">Mi perfil</a>
+                <?php elseif ( $roleId === 3 ): ?>
+                    <a href="?url=swimmer-lessons" class="nav-link-item">Clases</a>
+                    <a href="?url=swimmer-profile" class="nav-link-item">Mi perfil</a>
+                <?php endif; ?>
 
                 <?php
                     $foto = $_SESSION['profile_image'] ?? 'default-profile.png';
-                    $rutaFoto = Env::get('APP_URL') . "/img/uploads/profiles/swimmers/" . $foto;
+                    $rutaFoto = rtrim( Env::get( 'ASSET_URL' ), '/' ) . '/img/uploads/profiles/swimmers/' . $foto;
                 ?>
                 <img src="<?= $rutaFoto ?>" alt="Perfil" class="profile-img-nav">
-                <span class="nav-greeting">Hola, <?= htmlspecialchars($_SESSION['first_name'] ?? 'Usuario') ?></span>
+                <span class="nav-greeting">Hola, <?= htmlspecialchars( $_SESSION['first_name'] ?? 'Usuario' ) ?></span>
                 <a href="?url=logout" class="btn-nav-logout">Cerrar sesión</a>
 
             <?php else: ?>
