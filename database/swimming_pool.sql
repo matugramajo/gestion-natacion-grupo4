@@ -103,9 +103,9 @@ CREATE TABLE `profiles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `profiles` (`id`, `auth_id`, `first_name`, `last_name`, `phone`, `address`, `profile_image`, `birth_date`) VALUES
-(1, 1, 'Ana', 'Administradora', '1100000001', 'Av. del Agua 100', 'default-profile.png', '1985-03-15'),
-(2, 2, 'Carlos', 'Entrenador', '1100000002', 'Calle Pileta 50', 'default-profile.png', '1990-07-20'),
-(3, 3, 'Juan Pablo', 'Nadador', '1100000003', 'Pasaje Ola 12', 'default-profile.png', '2005-01-10');
+(1, 1, 'Cami', 'Administradora', '1100000001', 'Av. del Agua 100', 'default-profile.png', '1985-03-15'),
+(2, 2, 'Marti', 'Entrenador', '1100000002', 'Calle Pileta 50', 'default-profile.png', '1990-07-20'),
+(3, 3, 'Matu', 'Nadador', '1100000003', 'Pasaje Ola 12', 'default-profile.png', '2005-01-10');
 
 -- --------------------------------------------------------
 -- Table structure for table `swimmers`

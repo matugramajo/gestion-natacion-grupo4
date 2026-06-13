@@ -5,6 +5,15 @@
  * y controlar comportamientos como redirección o modo silencioso.
  */
 
+const SWAL_PRIMARY = "#1a6cf6";
+const SWAL_CANCEL = "#9ca3af";
+
+/** Instancia con botones celestes (evita el violeta por defecto de SweetAlert2). */
+export const swal = Swal.mixin({
+  confirmButtonColor: SWAL_PRIMARY,
+  cancelButtonColor: SWAL_CANCEL,
+});
+
 export const handleAlert = (status, message, redirectUrl = null, options = {}) => {
   const { silent = false } = options;
 
@@ -14,7 +23,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
   // ERRORES CRÍTICOS
   // Se muestran siempre, sin excepción
   if (status === "error") {
-    return Swal.fire({
+    return swal.fire({
       icon: "error",
       title: "Error",
       text: message,
@@ -23,7 +32,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
 
   // ADVERTENCIAS DE VALIDACIÓN
   if (status === "warning") {
-    return Swal.fire({
+    return swal.fire({
       icon: "warning",
       title: "Atención",
       text: message,
@@ -32,7 +41,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
 
   // MENSAJES INFORMATIVOS
   if (status === "info" || status === "user_exists") {
-    return Swal.fire({
+    return swal.fire({
       icon: "info",
       title: "Aviso",
       text: message,
@@ -56,7 +65,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
     }
 
     // OTROS CASOS: mostrar popup
-    return Swal.fire({
+    return swal.fire({
       icon: "success",
       title: "Listo",
       text: message,
@@ -68,7 +77,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
   }
 
   // CASO POR DEFECTO
-  return Swal.fire({
+  return swal.fire({
     icon: "info",
     title: "Aviso",
     text: message,

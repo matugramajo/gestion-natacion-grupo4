@@ -3,43 +3,6 @@
         main {
             padding-top: 0 !important;
         }
-        
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .nav-logo span {
-            font-size: 21px;
-            font-weight: 700;
-            color: #0b1120;
-        }
-
-        .nav-logo span em {
-            color: #1a6cf6;
-            font-style: normal;
-        }
-
-        .btn-nav-login {
-            border: 1.5px solid #1a6cf6;
-            color: #1a6cf6;
-            padding: 7px 21px;
-            border-radius: 8px;
-            font-weight: 500;
-            text-decoration: none;
-        }
-
-        .btn-nav-register {
-            background: #1a6cf6;
-            color: #fff;
-            padding: 7px 21px;
-            border-radius: 8px;
-            font-weight: 500;
-            text-decoration: none;
-        }
 
         .hero {
             min-height: 100vh;
@@ -192,20 +155,13 @@
             border-radius: 6px;
             font-size: 12px;
             font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .level-prin {
-             background: #dcfce7; color: #166534; 
-        }
-        .level-inter { 
-            background: #dbeafe; color: #1e40af; 
-        }
-        .level-avanz { 
-            background: #fef9c3; color: #854d0e; 
-        }
-        .level-comp { 
-            background: #f2ad9f; color: #d23c1a; 
-        }
+        .level-prin { background: #3edbdb; color: #004f4f; }
+        .level-inter { background: #b1c5ff; color: #00419f; }
+        .level-avanz { background: #ffb597; color: #7d2d00; }
+        .level-comp { background: #ffedd5; color: #9a3412; }
 
         .ver-todo {
             color: #1a6cf6;
@@ -354,7 +310,7 @@
 </section>
 <footer class="footer-landing">
     <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <span>SwimManager &copy; <?= date('Y') ?> — Aplicaciones WEB</span>
+        <span>SwimManager &copy; <?= date('Y') ?></span>
     </div>
 </footer>
 

@@ -81,13 +81,15 @@
     <div class="login-card">
 
         <div class="login-logo">
-            <svg width="44" height="28" viewBox="0 0 34 22" fill="none" style="margin-bottom:8px">
-                <path d="M2 14c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#1a6cf6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M2 19c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#0bc5c5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <circle cx="17" cy="7" r="2.5" fill="#1a6cf6"/>
-            </svg>
-            <br>
-            <span>Swim<em>Manager</em></span>
+            <a href="?url=home" style="text-decoration:none; color:inherit;">
+                <svg width="44" height="28" viewBox="0 0 34 22" fill="none" style="margin-bottom:8px">
+                    <path d="M2 14c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#1a6cf6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <path d="M2 19c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#0bc5c5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <circle cx="17" cy="7" r="2.5" fill="#1a6cf6"/>
+                </svg>
+                <br>
+                <span>Swim<em>Manager</em></span>
+            </a>
         </div>
 
         <div class="login-title">

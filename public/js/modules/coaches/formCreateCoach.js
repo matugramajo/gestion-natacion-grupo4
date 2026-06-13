@@ -1,4 +1,4 @@
-import { handleAlert } from "../../services/ui.js";
+import { handleAlert, swal } from "../../services/ui.js";
 
 export function initCreateCoach() {
     const form = document.getElementById("formCreateCoach");
@@ -20,7 +20,7 @@ export function initCreateCoach() {
             try {
                 const data = JSON.parse(text);
                 if ( data.status === 'success' ) {
-                    Swal.fire({
+                    swal.fire({
                         icon: 'success',
                         title: data.message,
                         showConfirmButton: false,

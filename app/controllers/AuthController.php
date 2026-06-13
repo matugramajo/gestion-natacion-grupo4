@@ -183,9 +183,9 @@ class AuthController extends BaseController {
             }
 
             // 3. Construimos la URL final
-            $loginUrl = $baseUrl . '/?url=login';
+            $landingUrl = $baseUrl . '/?url=home';
 
-            return $this->json( 'success', '¡Registro completado!', $loginUrl );
+            return $this->json( 'success', '¡Registro completado!', $landingUrl );
 
         } catch ( Exception $e ) {
             if ( $this->pdo->inTransaction() ) $this->pdo->rollBack();
@@ -219,6 +219,7 @@ class AuthController extends BaseController {
             $_SESSION['role_name']     = $user['role_name'] ?? Role::name( (int) $user['role_id'] );
             $_SESSION['email']         = $user['email'];
             $_SESSION['first_name']    = $user['first_name'];
+            $_SESSION['last_name']     = $user['last_name'] ?? '';
             $_SESSION['profile_image'] = $user['profile_image'];
 
             return $this->json( 'success', '¡Bienvenido ' . $user['first_name'] . '!', Env::get( 'APP_URL' ) . '/?url=home' );

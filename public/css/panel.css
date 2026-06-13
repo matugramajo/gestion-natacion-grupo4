@@ -22,24 +22,11 @@ body.panel-app {
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
 .icon-fill { font-variation-settings: 'FILL' 1; }
 
-.panel-topnav {
-    background: var(--sm-nav);
-    height: 64px;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1030;
-}
-.panel-topnav .brand { color: #fff; font-weight: 700; font-size: 1.1rem; text-decoration: none; }
-.panel-topnav .brand:hover { color: #fff; }
-.panel-topnav .logout-link { color: rgba(255,255,255,.75); font-size: .75rem; font-weight: 600; text-transform: uppercase; text-decoration: none; }
-.panel-topnav .logout-link:hover { color: var(--sm-primary); }
-.panel-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--sm-border); }
-
 .panel-sidebar {
     position: fixed;
-    top: 64px; left: 0;
+    top: var(--nav-height, 64px); left: 0;
     width: 256px;
-    height: calc(100vh - 64px);
+    height: calc(100vh - var(--nav-height, 64px));
     background: var(--sm-bg);
     border-right: 1px solid #f2f3ff;
     padding: 1.5rem 1rem;
@@ -68,17 +55,16 @@ body.panel-app {
 
 .panel-main {
     margin-left: 0;
-    margin-top: 64px;
+    margin-top: var(--nav-height, 64px);
     padding: 1rem 1rem 5rem;
     max-width: 1280px;
 }
 @media (min-width: 768px) {
     .panel-main { margin-left: 256px; padding: 2rem; padding-bottom: 2rem; }
-    .panel-topnav { display: block !important; }
     .panel-sidebar { display: flex !important; flex-direction: column; }
 }
 @media (max-width: 767.98px) {
-    .panel-topnav { display: none !important; }
+    .panel-main { margin-top: 0; }
     .panel-sidebar { display: none !important; }
 }
 
@@ -173,4 +159,17 @@ body.panel-app {
     width: 100%;
     border-radius: 16px;
     box-shadow: var(--sm-shadow);
+}
+
+/* SweetAlert2 — botón confirmar celeste (color primario del sistema) */
+div:where(.swal2-container) button.swal2-confirm {
+    background-color: var(--sm-primary) !important;
+    border-color: var(--sm-primary) !important;
+}
+div:where(.swal2-container) button.swal2-confirm:hover {
+    background-color: var(--sm-primary-dark) !important;
+    border-color: var(--sm-primary-dark) !important;
+}
+div:where(.swal2-container) button.swal2-confirm:focus {
+    box-shadow: 0 0 0 3px rgba(26, 108, 246, 0.45) !important;
 }

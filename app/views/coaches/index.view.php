@@ -1,4 +1,7 @@
-<?php include __DIR__ . '/../auth/layout/header.php'; ?>
+<?php
+require_once __DIR__ . '/../../core/ViewHelper.php';
+include __DIR__ . '/../auth/layout/header.php';
+?>
 
 <style>
     body {
@@ -169,9 +172,6 @@
                 <?php else: ?>
                 <?php foreach ( $coaches as $coach ): ?>
                 <?php
-                    $foto = $coach['profile_image'] ?? 'default-profile.png';
-                    $rutaFoto = Env::get('APP_URL') . '/img/uploads/profiles/swimmers/' . $foto;
-
                     $specialty = strtolower( $coach['specialty'] ?? '' );
                     if ( str_contains($specialty, 'competitiva') )     $badgeClass = 'spec-competitiva';
                     elseif ( str_contains($specialty, 'infantil') )    $badgeClass = 'spec-infantil';
@@ -182,7 +182,12 @@
                 <tr>
                     <td>
                         <div class="d-flex align-items-center gap-3">
-                            <img src="<?= $rutaFoto ?>" alt="Foto" class="coach-avatar">
+                            <?= ViewHelper::profileAvatar(
+                                $coach['first_name'] ?? '',
+                                $coach['last_name'] ?? '',
+                                $coach['profile_image'] ?? null,
+                                'coach-avatar'
+                            ) ?>
                             <div>
                                 <div class="coach-name"><?= htmlspecialchars( $coach['first_name'] . ' ' . $coach['last_name'] ) ?></div>
                                 <div class="coach-email"><?= htmlspecialchars( $coach['email'] ) ?></div>

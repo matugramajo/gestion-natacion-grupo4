@@ -3,8 +3,6 @@ require_once __DIR__ . '/../../../core/ViewHelper.php';
 $activeRoute = $_GET['url'] ?? 'home';
 $roleId = (int) ( $_SESSION['role_id'] ?? 0 );
 $firstName = htmlspecialchars( $_SESSION['first_name'] ?? 'Usuario' );
-$foto = $_SESSION['profile_image'] ?? 'default-profile.png';
-$avatarUrl = rtrim( Env::get( 'ASSET_URL' ), '/' ) . '/img/uploads/profiles/swimmers/' . rawurlencode( $foto );
 
 $navItems = [];
 if ( $roleId === Role::ADMIN ) {
@@ -28,21 +26,11 @@ if ( $roleId === Role::ADMIN ) {
     ];
 }
 ?>
-<header class="panel-topnav d-none d-md-block">
-    <div class="container-fluid h-100 px-4">
-        <div class="d-flex justify-content-between align-items-center h-100">
-            <a href="?url=home" class="brand d-flex align-items-center gap-2">
-                <span class="material-symbols-outlined icon-fill text-white">water</span>
-                SwimManager
-            </a>
-            <div class="d-flex align-items-center gap-3">
-                <span class="text-white-50 d-none d-lg-inline small">Hola, <?= $firstName ?></span>
-                <a href="?url=logout" class="logout-link">Salir</a>
-                <img src="<?= $avatarUrl ?>" alt="Perfil" class="panel-avatar">
-            </div>
-        </div>
-    </div>
-</header>
+<?php
+$navVariant = 'panel';
+$navExtraClass = '';
+include __DIR__ . '/navbar.php';
+?>
 
 <aside class="panel-sidebar d-none d-md-flex">
     <nav class="w-100">

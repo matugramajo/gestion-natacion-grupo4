@@ -1,3 +1,5 @@
+import { swal } from "../services/ui.js";
+
 /**
  * Comportamiento de la landing pública (sin layout auth).
  */
@@ -6,12 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (params.get("logout") !== "1") return;
 
-  Swal.fire({
+  swal.fire({
     icon: "success",
     title: "Sesión cerrada",
     text: "Cerraste sesión correctamente. ¡Hasta pronto!",
     confirmButtonText: "Entendido",
-    confirmButtonColor: "#1a6cf6",
   });
 
   params.delete("logout");
