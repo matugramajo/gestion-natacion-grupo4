@@ -1,5 +1,5 @@
 <style>
-
+/* todo tu CSS igual */
 .login-wrap{
     min-height:80vh;
     display:flex;
@@ -101,49 +101,69 @@
         </div>
 
         <form id="formRegister" method="POST" enctype="multipart/form-data">
+
             <div class="row">
                 <div class="col-md-6">
+
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
-                        <input type="text" name="first_name" class="form-control" placeholder="Ej: Juan" required>
+                        <input type="text" name="first_name" class="form-control" required>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" name="email" class="form-control" placeholder="juan@correo.com" required>
+                        <input type="email" name="email" class="form-control" required>
                     </div>
+
+                    <!-- 👁️ PASSWORD -->
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" name="password" class="form-control" placeholder="Mín. 6 caracteres" required>
+                        <div class="input-group">
+                            <input type="password" name="password" id="pass1" class="form-control" placeholder="Mín. 6 caracteres" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('pass1')">👁</button>
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Fecha de nacimiento</label>
                         <input type="date" name="birth_date" class="form-control" required>
                     </div>
+
                 </div>
 
                 <div class="col-md-6">
+
                     <div class="mb-3">
                         <label class="form-label">Apellido</label>
-                        <input type="text" name="last_name" class="form-control" placeholder="Ej: Pérez" required>
+                        <input type="text" name="last_name" class="form-control" required>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="text" name="phone" class="form-control" placeholder="11 1234 5678">
+                        <input type="text" name="phone" class="form-control">
                     </div>
+
+                    <!-- 👁️ CONFIRM PASSWORD -->
                     <div class="mb-3">
                         <label class="form-label">Confirmar contraseña</label>
-                        <input type="password" name="confirm_password" class="form-control" placeholder="Repetí tu contraseña" required>
+                        <div class="input-group">
+                            <input type="password" name="confirm_password" id="pass2" class="form-control" placeholder="Repetí tu contraseña" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('pass2')">👁</button>
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Foto de perfil</label>
                         <input type="file" name="profile_image" class="form-control" accept="image/*">
                     </div>
+
                 </div>
             </div>
 
             <button type="submit" class="btn-login mt-2">
                 Crear cuenta
             </button>
+
         </form>
 
         <div class="login-links">
@@ -155,5 +175,17 @@
 
     </div>
 </div>
+
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+</script>
 
 <?php include __DIR__ . '/layout/footer.php'; ?>
