@@ -6,7 +6,6 @@ require_once __DIR__ . '/Role.php';
 class BaseController {
 
     public function __construct() {
-        // Iniciamos sesión en el constructor base para que esté disponible en todos lados
         if ( session_status() === PHP_SESSION_NONE ) {
             session_start();
         }
@@ -40,12 +39,7 @@ class BaseController {
         return (int) ( $_SESSION['role_id'] ?? 0 );
     }
     
-    /**
-    * @param string $view  Nombre del archivo ( ej: 'usuarios/register' )
-    * @param array  $data  Diccionario de datos para la vista
-    */
     protected function render( $view, $data = [] ) {
-        // Extraemos el array: [ 'alerta' => '...' ] se vuelve la variable $alerta
         extract( $data );
 
         $path = __DIR__ . '/../views/' . $view . '.php';
@@ -65,6 +59,5 @@ class BaseController {
         'redirect' => $redirect ?? Env::get('APP_URL')
         ], JSON_UNESCAPED_SLASHES );
         exit;
-        // Importante para cortar la ejecución aquí
     }
 }

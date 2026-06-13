@@ -37,7 +37,6 @@ class Coach {
         return $this->db->query( 'SELECT id, name FROM specialties ORDER BY name' )->fetchAll( PDO::FETCH_ASSOC );
     }
 
-    /** Crea perfil + coach (módulo coaches/ de Martina) */
     public function create( array $data ) {
         $sqlProfile = "INSERT INTO profiles (auth_id, first_name, last_name, phone, profile_image)
                        VALUES (?, ?, ?, ?, ?)";
@@ -55,7 +54,6 @@ class Coach {
         return $stmtCoach->execute( [ $data['auth_id'], $data['specialty_id'] ] );
     }
 
-    /** Solo fila coaches (AdminController con Profile separado) */
     public function createForAuth( int $authId, int $specialtyId ) {
         $stmt = $this->db->prepare( 'INSERT INTO coaches (auth_id, specialty_id) VALUES (?, ?)' );
         return $stmt->execute( [ $authId, $specialtyId ] );

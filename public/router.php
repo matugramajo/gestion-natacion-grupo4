@@ -51,13 +51,15 @@ switch ( $route ) {
     case 'admin-edit-coach':
     case 'admin-update-coach':
     case 'admin-delete-coach':
+    case 'admin-delete-swimmer':
         require_once __DIR__ . '/../app/controllers/AdminController.php';
         $admin = new AdminController();
-        if ( $route === 'admin-coaches' )      $admin->coaches();
-        if ( $route === 'admin-store-coach' )  $admin->storeCoach();
-        if ( $route === 'admin-edit-coach' )   $admin->editCoach();
-        if ( $route === 'admin-update-coach' ) $admin->updateCoach();
-        if ( $route === 'admin-delete-coach' ) $admin->deleteCoach();
+        if ( $route === 'admin-coaches' )        $admin->coaches();
+        if ( $route === 'admin-store-coach' )    $admin->storeCoach();
+        if ( $route === 'admin-edit-coach' )     $admin->editCoach();
+        if ( $route === 'admin-update-coach' )   $admin->updateCoach();
+        if ( $route === 'admin-delete-coach' )   $admin->deleteCoach();
+        if ( $route === 'admin-delete-swimmer' ) $admin->deleteSwimmer();
         break;
 
     case 'admin-lessons':
@@ -70,6 +72,17 @@ switch ( $route ) {
         if ( $route === 'admin-store-lesson' )  $admin->storeLesson();
         if ( $route === 'admin-update-lesson' ) $admin->updateLesson();
         if ( $route === 'admin-delete-lesson' ) $admin->deleteLesson();
+        break;
+
+    // KAN-36: Módulo de alta de profesores (restaurado de eb2f7c9)
+    case 'coaches':
+    case 'coaches/create':
+    case 'coaches/store':
+        require_once __DIR__ . '/../app/controllers/CoachController.php';
+        $controller = new CoachController();
+        if ( $route === 'coaches' )         $controller->index();
+        if ( $route === 'coaches/create' )  $controller->create();
+        if ( $route === 'coaches/store' )   $controller->store();
         break;
 
     // Coach (panel)

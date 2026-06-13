@@ -249,4 +249,21 @@ class AdminController extends BaseController {
         }
         return $this->json( 'error', 'No se pudo eliminar.' );
     }
+
+    public function deleteSwimmer() {
+        $this->checkRole( [ Role::ADMIN ] );
+        if ( $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
+            return $this->json( 'error', 'Método no permitido.' );
+        }
+
+        $id = (int) ( $_POST['id'] ?? 0 );
+        if ( !$id ) {
+            return $this->json( 'warning', 'Nadador no válido.' );
+        }
+
+        if ( $this->swimmerModel->softDelete( $id ) ) {
+            return $this->json( 'success', 'Nadador eliminado.', '?url=swimmers' );
+        }
+        return $this->json( 'error', 'No se pudo eliminar al nadador.' );
+    }
 }

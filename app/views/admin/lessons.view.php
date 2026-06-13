@@ -12,6 +12,7 @@ include __DIR__ . '/../auth/layout/panel-start.php';
         <div class="col-md-4 col-lg-2">
             <label class="form-label small">Coach</label>
             <select name="coach_id" class="form-select form-select-sm" required>
+                <option value="" disabled selected>Seleccione un coach</option>
                 <?php foreach ( $coaches as $c ): ?>
                 <option value="<?= (int) $c['id'] ?>"><?= htmlspecialchars( $c['first_name'] . ' ' . $c['last_name'] ) ?></option>
                 <?php endforeach; ?>
@@ -88,6 +89,7 @@ include __DIR__ . '/../auth/layout/panel-start.php';
                     <div class="col-md-6">
                         <label class="form-label small">Coach</label>
                         <select name="coach_id" id="edit-coach-id" class="form-select" required>
+                            <option value="" disabled>Seleccione un coach</option>
                             <?php foreach ( $coaches as $c ): ?>
                             <option value="<?= (int) $c['id'] ?>"><?= htmlspecialchars( $c['first_name'] . ' ' . $c['last_name'] ) ?></option>
                             <?php endforeach; ?>

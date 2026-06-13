@@ -9,24 +9,12 @@ class AuthController extends BaseController {
     private $pdo;
 
     public function __construct() {
-        /** * Usamos 'global $pdo' porque la conexión se crea en otro archivo ( ej. index o database ).
-        * Sin esto, el controlador no tendría acceso al objeto de conexión PDO para pasárselo a los modelos.
-        * Es una forma de 'inyectar' la base de datos sin volver a conectarse en cada clase.
-        */
         global $pdo;
         $this->pdo = $pdo;
 
-        // Inicializamos los modelos pasándoles la conexión única
         $this->userModel = new Auth( $pdo );
         $this->swimmerModel = new Swimmer( $pdo );
     }
-
-    // --- SECCIÓN: VISTAS Y LISTADOS ---
-
-    /**
-    * Lista todos los nadadores registrados.
-    * Ideal para mostrar cómo se consumen datos con JOINs desde el modelo.
-    */
 
     public function index() {
         $this->checkRole( [ Role::ADMIN, Role::COACH ] );
@@ -47,19 +35,11 @@ class AuthController extends BaseController {
         $this->render( 'auth/forgot-password.view', [ 'title' => 'Recuperar Contraseña' ] );
     }
 
-    // --- SECCIÓN: PROCESAMIENTO DE DATOS ( POST ) ---
-
-    /**
-    * Punto de entrada para el registro de nuevos alumnos.
-    * Aquí separamos la validación de la lógica de negocio.
-    */
-
     public function register() {
         if ( $_SERVER[ 'REQUEST_METHOD' ] !== 'POST' ) {
             return $this->showRegister();
         }
 
-        // 1. Recolección y Sanitización ( Evitamos espacios vacíos y basura )
         $fields = [
             'first_name'    => trim( $_POST[ 'first_name' ] ?? '' ),
             'last_name'     => trim( $_POST[ 'last_name' ] ?? '' ),
@@ -67,10 +47,9 @@ class AuthController extends BaseController {
             'password'       => $_POST[ 'password' ] ?? '',
             'phone'          => trim( $_POST[ 'phone' ] ?? '' ),
             'birth_date'     => trim( $_POST[ 'birth_date' ] ?? '' ),
-            'profile_image'  => 'default-profile.png' // Valor por defecto
+            'profile_image'  => 'default-profile.png'
         ];
 
-        // 2. Validaciones Críticas ( Uso de 'Early Returns' para evitar anidación de IFs )
         if ( $this->hasEmptyFields( $fields ) ) {
             return $this->json( 'warning', 'Faltan datos obligatorios.' );
         }
@@ -92,7 +71,6 @@ class AuthController extends BaseController {
             return $this->json( 'warning', 'La contraseña es muy corta (mín. 6 caracteres).' );
         }
 
-        // --- GESTIÓN DE IMAGEN DE PERFIL ---
         $tempFile = null;
         if ( isset( $_FILES[ 'profile_image' ] ) && $_FILES[ 'profile_image' ][ 'error' ] === UPLOAD_ERR_OK ) {
             $uploadDir = __DIR__ . '/../../public/img/uploads/profiles/swimmers/';
@@ -112,17 +90,12 @@ class AuthController extends BaseController {
 
             if ( in_array( $extension, $allowed ) && in_array( $mimeType, $allowedMimes ) ) {
 
-
-                // 1. Tomamos la inicial del nombre en minúscula
                 $initial = strtolower( substr( $fields[ 'first_name' ], 0, 1 ) );
 
-                // 2. Limpiamos el apellido ( quitamos espacios y pasamos a minúscula )
                 $lastName = strtolower( str_replace( ' ', '', $fields[ 'last_name' ] ) );
 
-                // 3. Generamos un número aleatorio de 4 dígitos para evitar colisiones ( Juan Perez vs Jorge Perez )
                 $randomNumber = rand( 1000, 9999 );
 
-                // Resultado ej: jperez_4521.jpg
                 $newFileName = 'swimmer_' . $initial . $lastName . '_' . $randomNumber . '.' . $extension;
                 $absolutePath = $uploadDir . $newFileName;
 
@@ -133,20 +106,13 @@ class AuthController extends BaseController {
             }
         }
 
-        // 3. Pasamos a la ejecución de la lógica
         return $this->executeRegistration( $fields, $tempFile );
     }
-
-    /**
-    * Lógica de inscripción con Transacción SQL.
-    * Enseñamos que si algo falla en el medio, no debe quedar basura en la DB.
-    */
 
     private function executeRegistration( $f, $tempFile = null ) {
 
         try {
             if ( $this->userModel->findByEmail( $f[ 'email' ] ) ) {
-                // Si el usuario existe, borramos el archivo físico que acabamos de subir
                 if ( $tempFile && file_exists( $tempFile ) ) {
                     unlink( $tempFile );
 
@@ -160,11 +126,10 @@ class AuthController extends BaseController {
 
             $this->pdo->beginTransaction();
 
-            // Tabla: users
             $authId = $this->userModel->create( [
                 'email'    => $f[ 'email' ],
                 'password' => $f[ 'password' ],
-                'role_id'  => 3 // Rol Swimmer
+                'role_id'  => 3 
             ] );
 
             if ( !$authId ) throw new Exception( 'Error al crear credenciales.' );
@@ -174,22 +139,18 @@ class AuthController extends BaseController {
 
             $this->pdo->commit();
 
-            // 1. Obtenemos la URL base del .env ( ej: http://localhost/gestion-natacion )
             $baseUrl = rtrim( Env::get( 'APP_URL' ), '/' );
 
-            // 2. Si por algún error el .env está vacío, fallamos con una base segura
             if ( empty( $baseUrl ) ) {
                 $baseUrl = 'http://localhost/gestion-natacion-grupo4';
             }
 
-            // 3. Construimos la URL final
             $landingUrl = $baseUrl . '/?url=home';
 
             return $this->json( 'success', '¡Registro completado!', $landingUrl );
 
         } catch ( Exception $e ) {
             if ( $this->pdo->inTransaction() ) $this->pdo->rollBack();
-            // Si algo falló en SQL, borramos la foto para no dejar basura
             if ( $tempFile && file_exists( $tempFile ) ) {
                 unlink( $tempFile );
             }
@@ -197,10 +158,6 @@ class AuthController extends BaseController {
             return $this->json( 'error', 'No se pudo completar: ' . $e->getMessage() );
         }
     }
-
-    /**
-    * Procesa la autenticación de usuarios.
-    */
 
     public function authenticate() {
         if ( $_SERVER[ 'REQUEST_METHOD' ] !== 'POST' ) {
@@ -227,8 +184,6 @@ class AuthController extends BaseController {
 
         return $this->json( 'error', 'Credenciales incorrectas.' );
     }
-
-    // --- SECCIÓN: RECUPERACIÓN DE CONTRASEÑA ---
 
     public function sendReset() {
         $email = $_POST[ 'email' ] ?? '';
