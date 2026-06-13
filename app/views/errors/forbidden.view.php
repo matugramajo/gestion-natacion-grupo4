@@ -7,5 +7,4 @@
     <a href="?url=home" class="btn btn-sm-primary">Volver al inicio</a>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body></html>
+<?php include __DIR__ . '/../auth/layout/footer.php'; ?>

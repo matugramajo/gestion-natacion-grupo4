@@ -22,10 +22,9 @@ class MailService
             $mail->Username   = Env::get( 'MAIL_USERNAME' );
             $mail->Password   = Env::get( 'MAIL_PASSWORD' );
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = (int) $_ENV['MAIL_PORT'];
+            $mail->Port = (int) Env::get( 'MAIL_PORT', 587 );
 
             $mail->setFrom( Env::get( 'MAIL_FROM' ), 'Soporte Escuela de Natación' );
-            //$mail->setFrom( 'lic.juanpablocesarini@gmail.com', 'Escuela de Natación' );
             $mail->addAddress( $toEmail );
 
             $mail->isHTML( true );
@@ -34,8 +33,6 @@ class MailService
 
             $baseUrl = Env::get( 'APP_URL' );
             $resetLink = rtrim( $baseUrl, '/' ) . '/index.php?url=reset-password&token=' . $token;
-
-            // Armamos el Body con un formato más robusto
             $mail->Body = "
 <div style='background-color: {$colorFondo}; padding: 40px; font-family: Arial, sans-serif; line-height: 1.6;'>
     <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e1e8ed;'>
@@ -70,11 +67,7 @@ class MailService
     </div>
 </div>
 ";
-           // $mail->SMTPDebug = 3;
-            // Nivel 3 es más detallado
-         //   $mail->Debugoutput = 'html';
-            // Para que se vea bien en el navegador
-            $mail->send();
+        $mail->send();
             return true;
         } catch ( Exception $e ) {
             error_log( 'PHPMailer: ' . $mail->ErrorInfo . ' | ' . $e->getMessage() );

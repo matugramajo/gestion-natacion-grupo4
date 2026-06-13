@@ -51,27 +51,7 @@ $isPanelNav = $navVariant === 'panel';
                 <a href="?url=login" class="btn-nav-login">Ingresar</a>
                 <a href="?url=register" class="btn-nav-register">Registrarse</a>
 
-            <?php else: ?>
-
-                <a href="?url=home" class="nav-link-item">Dashboard</a>
-
-                <?php if ( $roleId === 1 ): ?>
-                    <a href="?url=swimmers" class="nav-link-item">Nadadores</a>
-                    <a href="?url=coaches" class="nav-link-item">Profesores</a>
-                    <a href="?url=admin-lessons" class="nav-link-item">Clases</a>
-                <?php elseif ( $roleId === 2 ): ?>
-                    <a href="?url=coach-students" class="nav-link-item">Mis alumnos</a>
-                    <a href="?url=coach-profile" class="nav-link-item">Mi perfil</a>
-                <?php elseif ( $roleId === 3 ): ?>
-                    <a href="?url=swimmer-lessons" class="nav-link-item">Clases</a>
-                    <a href="?url=swimmer-profile" class="nav-link-item">Mi perfil</a>
-                <?php endif; ?>
-
-                <?= ViewHelper::profileAvatar( $firstNameRaw, $lastNameRaw, $profileImage ) ?>
-                <span class="nav-greeting">Hola, <?= $firstName ?></span>
-                <a href="?url=logout" class="btn-nav-logout">Cerrar sesión</a>
-
-            <?php endif; ?>
+           <?php endif; ?>
 
         </div>
     </div>

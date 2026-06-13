@@ -14,8 +14,8 @@ error_log
 storage/*.log
 
 # Ignorar todas las fotos de nadadores subidas
-public/js/modules/auth/uploads/profiles/swimmers/*
+public/img/uploads/profiles/swimmers/*
 
 # Excepciones: NO ignorar el archivo por defecto
-!public/js/modules/auth/uploads/profiles/swimmers/default-profile.png
+!public/img/uploads/profiles/swimmers/default-profile.png
 

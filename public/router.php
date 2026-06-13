@@ -44,18 +44,7 @@ switch ( $route ) {
         require_once __DIR__ . '/../app/controllers/AuthController.php';
         ( new AuthController() )->index();
         break;
-
-    // Módulo coaches (vistas de Martina — KAN-36)
-    case 'coaches':
-    case 'coaches/create':
-    case 'coaches/store':
-        require_once __DIR__ . '/../app/controllers/CoachController.php';
-        $controller = new CoachController();
-        if ( $route === 'coaches' )        $controller->index();
-        if ( $route === 'coaches/create' ) $controller->create();
-        if ( $route === 'coaches/store' )  $controller->store();
-        break;
-
+        
     // Admin (panel)
     case 'admin-coaches':
     case 'admin-store-coach':
