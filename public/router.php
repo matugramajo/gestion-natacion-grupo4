@@ -44,14 +44,20 @@ switch ( $route ) {
         require_once __DIR__ . '/../app/controllers/AuthController.php';
         ( new AuthController() )->index();
         break;
-        
+
     // Admin (panel)
     case 'admin-coaches':
     case 'admin-store-coach':
+    case 'admin-edit-coach':
+    case 'admin-update-coach':
+    case 'admin-delete-coach':
         require_once __DIR__ . '/../app/controllers/AdminController.php';
         $admin = new AdminController();
-        if ( $route === 'admin-coaches' )     $admin->coaches();
-        if ( $route === 'admin-store-coach' ) $admin->storeCoach();
+        if ( $route === 'admin-coaches' )      $admin->coaches();
+        if ( $route === 'admin-store-coach' )  $admin->storeCoach();
+        if ( $route === 'admin-edit-coach' )   $admin->editCoach();
+        if ( $route === 'admin-update-coach' ) $admin->updateCoach();
+        if ( $route === 'admin-delete-coach' ) $admin->deleteCoach();
         break;
 
     case 'admin-lessons':

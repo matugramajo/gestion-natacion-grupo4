@@ -186,4 +186,67 @@ class AdminController extends BaseController {
             'capacity'     => $capacity,
         ];
     }
+
+    public function editCoach() {
+    $this->checkRole( [ Role::ADMIN ] );
+    $id = (int) ( $_GET['id'] ?? 0 );
+    if ( !$id ) {
+        header( 'Location: ?url=admin-coaches' );
+        exit;
+    }
+    $coaches = $this->coachModel->getAll();
+    $coach   = array_filter( $coaches, fn($c) => (int) $c['id'] === $id );
+    $coach   = reset( $coach );
+    if ( !$coach ) {
+        header( 'Location: ?url=admin-coaches' );
+        exit;
+    }
+    $this->render( 'admin/coaches.view', [
+        'titulo'      => 'Editar Coach',
+        'coaches'     => $coaches,
+        'specialties' => $this->coachModel->getSpecialties(),
+        'editCoach'   => $coach,
+    ] );
+    }
+
+    public function updateCoach() {
+        $this->checkRole( [ Role::ADMIN ] );
+        if ( $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
+            return $this->json( 'error', 'Método no permitido.' );
+        }
+
+        $id   = (int) ( $_POST['id'] ?? 0 );
+        $data = [
+            'first_name'   => trim( $_POST['first_name'] ?? '' ),
+            'last_name'    => trim( $_POST['last_name']  ?? '' ),
+            'phone'        => trim( $_POST['phone']       ?? '' ),
+            'specialty_id' => (int) ( $_POST['specialty_id'] ?? 0 ),
+        ];
+
+        if ( !$id || empty( $data['first_name'] ) || empty( $data['last_name'] ) ) {
+            return $this->json( 'warning', 'Datos inválidos.' );
+        }
+
+        if ( $this->coachModel->update( $id, $data ) ) {
+            return $this->json( 'success', 'Coach actualizado.', '?url=admin-coaches' );
+        }
+        return $this->json( 'error', 'No se pudo actualizar.' );
+    }
+
+    public function deleteCoach() {
+        $this->checkRole( [ Role::ADMIN ] );
+        if ( $_SERVER['REQUEST_METHOD'] !== 'POST' ) {
+            return $this->json( 'error', 'Método no permitido.' );
+        }
+
+        $id = (int) ( $_POST['id'] ?? 0 );
+        if ( !$id ) {
+            return $this->json( 'warning', 'Coach no válido.' );
+        }
+
+        if ( $this->coachModel->softDelete( $id ) ) {
+            return $this->json( 'success', 'Coach eliminado.', '?url=admin-coaches' );
+        }
+        return $this->json( 'error', 'No se pudo eliminar.' );
+    }
 }

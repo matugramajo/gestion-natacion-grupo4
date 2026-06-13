@@ -64,4 +64,34 @@ class Coach {
     public function countActive(): int {
         return (int) $this->db->query( "SELECT COUNT(*) FROM coaches WHERE deleted_at IS NULL" )->fetchColumn();
     }
+
+    public function update( int $coachId, array $data ): bool {
+    $this->db->prepare(
+        "UPDATE profiles SET first_name=?, last_name=?, phone=?, updated_at=NOW()
+         WHERE auth_id = (SELECT auth_id FROM coaches WHERE id=? LIMIT 1)"
+    )->execute([ $data['first_name'], $data['last_name'], $data['phone'] ?? null, $coachId ]);
+
+    return (bool) $this->db->prepare(
+        "UPDATE coaches SET specialty_id=?, updated_at=NOW() WHERE id=?"
+    )->execute([ $data['specialty_id'], $coachId ]);
+    }
+
+    public function softDelete( int $coachId ): bool {
+        $authId = $this->db->prepare(
+            "SELECT auth_id FROM coaches WHERE id=? LIMIT 1"
+        );
+        $authId->execute([ $coachId ]);
+        $row = $authId->fetch( PDO::FETCH_ASSOC );
+        if ( !$row ) return false;
+
+        $this->db->prepare(
+            "UPDATE coaches SET deleted_at=NOW() WHERE id=?"
+        )->execute([ $coachId ]);
+
+        $this->db->prepare(
+            "UPDATE auth SET deleted_at=NOW() WHERE id=?"
+        )->execute([ $row['auth_id'] ]);
+
+        return true;
+    }
 }
