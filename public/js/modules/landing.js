@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     icon: "success",
     title: "Sesión cerrada",
     text: "Cerraste sesión correctamente. ¡Hasta pronto!",
-    confirmButtonText: "Entendido",
+    showConfirmButton: false,
+    timer: 2000,
   });
 
   params.delete("logout");

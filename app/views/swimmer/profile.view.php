@@ -1,8 +1,8 @@
 <?php $p = $profile ?? []; include __DIR__ . '/../auth/layout/panel-head.php'; include __DIR__ . '/../auth/layout/panel-start.php'; ?>
 
-<h1 class="h3 fw-bold mb-4">Mi perfil</h1>
+<h1 class="h3 fw-bold mb-4 text-center">Mi perfil</h1>
 
-<div class="card-panel p-4" style="max-width: 560px">
+<div class="card-panel p-4 mx-auto" style="max-width: 560px">
     <form class="ajax-form" data-action="?url=swimmer-update-profile" data-validate="profile">
         <div class="mb-3"><label class="form-label">Nombre</label><input type="text" name="first_name" value="<?= htmlspecialchars( $p['first_name'] ?? '' ) ?>" required class="form-control"></div>
         <div class="mb-3"><label class="form-label">Apellido</label><input type="text" name="last_name" value="<?= htmlspecialchars( $p['last_name'] ?? '' ) ?>" required class="form-control"></div>

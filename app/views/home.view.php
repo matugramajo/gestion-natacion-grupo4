@@ -50,7 +50,7 @@ include __DIR__ . '/auth/layout/panel-start.php';
 </div>
 
 <div class="row g-4">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card-panel stat-card h-100">
             <h2 class="h5 fw-bold mb-4">Mis clases</h2>
             <span class="stat-value text-primary"><?= count( $coachLessons ) ?></span>

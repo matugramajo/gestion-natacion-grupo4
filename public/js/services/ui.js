@@ -12,13 +12,11 @@ const SWAL_CANCEL = "#9ca3af";
 export const swal = Swal.mixin({
   confirmButtonColor: SWAL_PRIMARY,
   cancelButtonColor: SWAL_CANCEL,
+  showConfirmButton: false,
 });
 
 export const handleAlert = (status, message, redirectUrl = null, options = {}) => {
   const { silent = false } = options;
-
-  // Definimos el estado recibido desde el backend
-  console.log("STATUS REAL:", status);
 
   // ERRORES CRÍTICOS
   // Se muestran siempre, sin excepción
@@ -27,6 +25,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
       icon: "error",
       title: "Error",
       text: message,
+      showConfirmButton: true,
     });
   }
 
@@ -36,6 +35,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
       icon: "warning",
       title: "Atención",
       text: message,
+      showConfirmButton: true,
     });
   }
 
@@ -45,7 +45,7 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
       icon: "info",
       title: "Aviso",
       text: message,
-      confirmButtonText: "Aceptar",
+      showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed && redirectUrl) {
         window.location.href = redirectUrl;
@@ -69,6 +69,8 @@ export const handleAlert = (status, message, redirectUrl = null, options = {}) =
       icon: "success",
       title: "Listo",
       text: message,
+      showConfirmButton: false,
+      timer: 2000,
     }).then(() => {
       if (redirectUrl) {
         window.location.href = redirectUrl;

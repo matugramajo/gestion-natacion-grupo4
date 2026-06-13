@@ -5,7 +5,7 @@
 <div class="card-panel p-4 mb-4">
     <form method="get" class="row g-2">
         <input type="hidden" name="url" value="coach-students">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <label class="form-label small fw-semibold">Filtrar por clase</label>
             <select name="lesson_id" onchange="this.form.submit()" class="form-select">
                 <option value="">— Seleccioná una clase —</option>

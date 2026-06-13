@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-5">
         <div class="card-panel p-4">
 
             <h2 class="h5 fw-bold mb-3">Cambiar contraseña</h2>
