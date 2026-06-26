@@ -16,12 +16,10 @@ class Env
 
             $line = trim($line);
 
-            // Ignorar comentarios
             if (strpos($line, '#') === 0) {
                 continue;
             }
 
-            // Separar clave y valor
             list($name, $value) = explode('=', $line, 2);
 
             $name = trim($name);

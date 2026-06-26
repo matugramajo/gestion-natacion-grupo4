@@ -1,91 +1,62 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
+
+
 <head>
+
     <meta charset="UTF-8">
-    <title><?= $titulo ?? 'Escuela de Natación' ?></title>
+
+    <title><?= $titulo ?? 'SwimManager' ?></title>
+
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <link href="<?= rtrim( Env::get( 'ASSET_URL' ), '/' ) ?>/css/navbar.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-    body {
-        font-family: 'Outfit', sans-serif;
-    }
 
-    .profile-img-nav {
-        width: 35px;
-        height: 35px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 2px solid #17a2b8;
-    }
+
+    <style>
+
+        body { font-family: 'Outfit', sans-serif; }
+
     </style>
+
 </head>
+
+
 
 <body>
 
+
+
 <?php
+
 $url = $_GET['url'] ?? '';
 
-if (
-    $url !== 'login' &&
-    $url !== 'register' &&
-    $url !== 'forgot-password' &&
-    $url !== 'reset-password'
-) :
+$hideNav = in_array( $url, [ 'login', 'register', 'forgot-password', 'reset-password' ], true );
+
 ?>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="?url=home">SwimManager 🚩</a>
 
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto align-items-center">
 
-                    <?php if (isset($_SESSION['user_id'])): ?>
+<?php if ( !$hideNav ): ?>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="?url=swimmers">Nadadores</a>
-                    </li>
+    <?php
 
-                    <li class="nav-item d-flex align-items-center">
-                        <?php
-                            $foto = $_SESSION['profile_image'] ?? 'default-profile.png';
-                            $rutaFoto = Env::get('APP_URL') . "/img/uploads/profiles/swimmers/" . $foto;
-                        ?>
+    $navVariant = isset( $_SESSION['user_id'] ) ? 'authenticated' : 'guest';
 
-                        <img src="<?= $rutaFoto ?>" alt="Perfil" class="profile-img-nav me-2">
+    include __DIR__ . '/navbar.php';
 
-                        <span class="nav-link text-info p-0">
-                            Hola, <?= htmlspecialchars($_SESSION['first_name'] ?? 'Usuario') ?>
-                        </span>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-danger btn-sm ms-3" href="?url=logout">
-                            Salir
-                        </a>
-                    </li>
-
-                    <?php else: ?>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="?url=login">
-                            Ingresar
-                        </a>
-                    </li>
-
-                    <?php endif; ?>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+    ?>
 
 <?php endif; ?>
 
-<main class="container mt-4">
+<main>
+

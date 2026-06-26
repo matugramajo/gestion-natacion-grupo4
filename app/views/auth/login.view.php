@@ -114,12 +114,20 @@
 
             <div class="mb-3">
                 <label class="form-label">Contraseña</label>
-                <input
-                    type="password"
-                    name="password"
-                    class="form-control"
-                    placeholder="********"
-                    required>
+
+                <div class="input-group">
+                    <input
+                        type="password"
+                        name="password"
+                        id="login_pass"
+                        class="form-control"
+                        placeholder="********"
+                        required>
+
+                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('login_pass')">
+                        👁
+                    </button>
+                </div>
             </div>
 
             <button type="submit" class="btn-login">

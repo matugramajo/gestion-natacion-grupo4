@@ -60,10 +60,8 @@ export function initRegister() {
       });
 
       const text = await response.text();
-      console.log("text antes del try: ", text);
       try {
         const data = JSON.parse(text);
-        console.log("data antes del handleAlert: ", data);
         // El servidor retornará el status (success, error, warning) y el mensaje
         handleAlert(data.status, data.message, data.redirect);
       } catch (err) {
@@ -74,24 +72,6 @@ export function initRegister() {
           "Error crítico en el servidor. Revisar consola de red.",
         );
       }
-      /*     try {
-        // Limpiamos espacios en blanco accidentales que pueda mandar PHP
-        const cleanText = text.trim();
-        console.log("Contenido crudo recibido:", text);
-
-        const data = JSON.parse(cleanText);
-        console.log("JSON parseado con éxito:", data);
-
-        handleAlert(data.status, data.message, data.redirect);
-      } catch (err) {
-        console.error("ERROR DE PARSEO:");
-        console.error(err.message);
-        console.error("LO QUE FALLÓ FUE ESTO ->", text);
-        handleAlert(
-          "error",
-          "El servidor mandó un formato inválido. Revisar consola.",
-        );
-      } */
     } catch (error) {
       console.error("Error en la conexión Fetch:", error);
       handleAlert("error", "No se pudo establecer conexión con el servidor.");

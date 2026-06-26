@@ -1,0 +1,224 @@
+:root {
+    --nav-height: 64px;
+    --nav-sidebar-width: 256px;
+}
+
+.nav-main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1030;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nav-main:not(.nav-panel) {
+    display: flex;
+    align-items: center;
+}
+
+.nav-main > .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    max-width: 1320px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.nav-logo span {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b1120;
+}
+
+.nav-logo span em {
+    color: #1a6cf6;
+    font-style: normal;
+}
+
+/* Panel dashboard */
+.nav-main.nav-panel {
+    background: #fff;
+    border-bottom-color: #e1e2ed;
+}
+
+.nav-main.nav-panel .nav-panel-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-main.nav-panel .nav-panel-logo-zone {
+    display: flex;
+    align-items: center;
+    width: var(--nav-sidebar-width);
+    min-width: var(--nav-sidebar-width);
+    height: 100%;
+    padding-left: 1rem;
+    border-right: 1px solid #f2f3ff;
+    box-sizing: border-box;
+}
+
+.nav-main.nav-panel .nav-panel-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    padding-right: 2rem;
+}
+
+.nav-panel .nav-greeting {
+    font-size: 0.875rem;
+    color: #1a6cf6;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nav-panel .btn-nav-logout {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 5px 14px;
+    white-space: nowrap;
+}
+
+.nav-panel .profile-img-nav {
+    width: 32px;
+    height: 32px;
+    border-width: 1px;
+    border-color: #e1e2ed;
+    flex-shrink: 0;
+}
+
+.nav-link-item {
+    color: #374151;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.nav-link-item:hover {
+    background: #f3f4f6;
+    color: #0b1120;
+}
+
+.btn-nav-login {
+    border: 1.5px solid #9ca3af;
+    color: #374151;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-nav-login:hover {
+    background: #1a6cf6;
+    color: #fff;
+}
+
+.btn-nav-register {
+    background: #1a6cf6;
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-nav-register:hover {
+    background: #0d4fd6;
+    color: #fff;
+}
+
+.btn-nav-logout {
+    border: 1.5px solid #e6e5eb;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-nav-logout:hover {
+    background: #0d4fd6;
+    color: #fff;
+}
+
+.profile-img-nav {
+    width: 34px;
+    height: 34px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #1a6cf6;
+}
+
+.profile-avatar-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    flex-shrink: 0;
+    line-height: 1;
+    user-select: none;
+}
+
+.profile-avatar-initials.profile-img-nav {
+    font-size: 0.75rem;
+}
+
+.profile-avatar-initials.coach-avatar {
+    font-size: 0.8rem;
+}
+
+.nav-greeting {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a6cf6;
+}
+
+body:not(.panel-app) main {
+    padding-top: var(--nav-height);
+}
+
+/* SweetAlert2 — botón confirmar celeste (color primario del sistema) */
+div:where(.swal2-container) button.swal2-confirm {
+    background-color: #1a6cf6 !important;
+    border-color: #1a6cf6 !important;
+}
+div:where(.swal2-container) button.swal2-confirm:hover {
+    background-color: #0054cb !important;
+    border-color: #0054cb !important;
+}
+div:where(.swal2-container) button.swal2-confirm:focus {
+    box-shadow: 0 0 0 3px rgba(26, 108, 246, 0.45) !important;
+}

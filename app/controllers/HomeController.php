@@ -1,28 +1,68 @@
 <?php
-// app/controllers/HomeController.php
-
 require_once __DIR__ . '/../core/BaseController.php';
+require_once __DIR__ . '/../models/Swimmer.php';
+require_once __DIR__ . '/../models/Coach.php';
+require_once __DIR__ . '/../models/Lesson.php';
+require_once __DIR__ . '/../models/Booking.php';
+require_once __DIR__ . '/../models/Profile.php';
 
 class HomeController extends BaseController {
-    /**
-     * Muestra el panel principal.
-     * Ahora usa el motor de renderizado heredado de BaseController
-     * para mantener la coherencia en todo el proyecto.
-     */
+    private $swimmerModel;
+    private $coachModel;
+    private $lessonModel;
+    private $bookingModel;
+    private $profileModel;
+
+    public function __construct() {
+        global $pdo;
+        $this->swimmerModel = new Swimmer( $pdo );
+        $this->coachModel   = new Coach( $pdo );
+        $this->lessonModel  = new Lesson( $pdo );
+        $this->bookingModel = new Booking( $pdo );
+        $this->profileModel = new Profile( $pdo );
+    }
+
     public function index() {
-        // Verificamos si el usuario está logueado antes de mostrar el panel
         $this->checkAuth();
 
-        $data = [
-            'title' => "Dashboard - Swimming School",
-            'user'  => $_SESSION['email'] ?? 'Guest'
+        $roleId = $this->currentRoleId();
+        $stats  = [
+            'swimmers' => $this->swimmerModel->countActive(),
+            'coaches'  => $this->coachModel->countActive(),
+            'lessons'  => $this->lessonModel->countActive(),
+            'bookings' => $this->bookingModel->countActive(),
         ];
-        
-        // El método render busca automáticamente en /views/ y permite pasar datos
-        $this->render('home.view', $data);
+
+        $coachLessons = [];
+        $myBookings   = [];
+        if ( $roleId === Role::COACH ) {
+            $coach = $this->coachModel->findByAuthId( (int) $_SESSION['user_id'] );
+            if ( $coach ) {
+                $coachLessons = $this->lessonModel->getByCoachId( (int) $coach['id'] );
+            }
+        }
+        if ( $roleId === Role::SWIMMER ) {
+            $swimmer = $this->swimmerModel->findByAuthId( (int) $_SESSION['user_id'] );
+            if ( $swimmer ) {
+                $myBookings = $this->bookingModel->getBySwimmerId( (int) $swimmer['id'] );
+            }
+        }
+
+        $this->render( 'home.view', [
+            'titulo'       => 'Dashboard - SwimManager',
+            'roleId'       => $roleId,
+            'stats'        => $stats,
+            'coachLessons' => $coachLessons,
+            'myBookings'   => $myBookings,
+            'firstName'    => $_SESSION['first_name'] ?? 'Usuario',
+        ] );
     }
 
     public function landing() {
-    $this->render( 'landing.view' );
-}
+        global $pdo;
+        $lessonModel = new Lesson( $pdo );
+        $this->render( 'landing.view', [
+            'schedule' => $lessonModel->getPublicSchedule(),
+        ] );
+    }
 }

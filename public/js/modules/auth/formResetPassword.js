@@ -12,7 +12,17 @@ export function initResetPassword() {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
+        const password = form.querySelector('input[name="password"]')?.value ?? '';
+        const confirmPassword = form.querySelector('input[name="confirm_password"]')?.value ?? '';
+
+        if (password.length < 6) {
+            return handleAlert('warning', 'La contraseña debe tener al menos 6 caracteres.');
+        }
+        if (password !== confirmPassword) {
+            return handleAlert('warning', 'Las contraseñas no coinciden.');
+        }
+
         const formData = new FormData(form);
 
         try {

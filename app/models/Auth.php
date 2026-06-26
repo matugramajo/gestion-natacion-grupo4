@@ -1,18 +1,11 @@
 <?php
 
-class User {
+class Auth {
     private $db;
 
     public function __construct( $pdo ) {
         $this->db = $pdo;
     }
-
-    // --- SECCIÓN: BÚSQUEDA E IDENTIFICACIÓN ---
-
-    /**
-    * Busca un usuario por email.
-    * @return array|bool Retorna los datos del usuario o false si no existe.
-    */
 
     public function findByEmail( $email ) {
         $stmt = $this->db->prepare( 'SELECT * FROM auth WHERE email = ? AND deleted_at IS NULL LIMIT 1' );
@@ -20,16 +13,8 @@ class User {
         return $stmt->fetch( PDO::FETCH_ASSOC );
     }
 
-    // --- SECCIÓN: GESTIÓN DE CUENTA ---
-
-    /**
-    * Crea las credenciales de acceso para un nuevo usuario.
-    * @param array $data [ 'email' => string, 'password' => string, 'role_id' => int ]
-    */
-
     public function create( array $data ) {
         $hash = password_hash( $data[ 'password' ], PASSWORD_BCRYPT );
-        // Usamos el role_id del array, o 3 ( Swimmer ) por defecto si no viene
         $roleId = $data[ 'role_id' ] ?? 3;
 
         $stmt = $this->db->prepare( 'INSERT INTO auth (email, password, role_id) VALUES (?, ?, ?)' );
@@ -40,51 +25,36 @@ class User {
         return false;
     }
 
-    /**
-    * Valida las credenciales en el inicio de sesión.
-    */
-
     public function login( $email, $password ) {
-        // Traemos los datos de auth y los datos de perfil de swimmers
-        $sql = "SELECT a.*, p.first_name, p.last_name, p.profile_image
-        FROM auth a
-        INNER JOIN profiles p ON a.id = p.auth_id
-        WHERE a.email = ? AND a.deleted_at IS NULL
-        LIMIT 1";
+        $sql = "SELECT a.*, p.first_name, p.last_name, p.profile_image, r.role_name
+                FROM auth a
+                LEFT JOIN profiles p ON a.id = p.auth_id
+                INNER JOIN roles r ON a.role_id = r.id
+                WHERE a.email = ? AND a.deleted_at IS NULL
+                LIMIT 1";
 
         $stmt = $this->db->prepare( $sql );
         $stmt->execute( [ $email ] );
         $user = $stmt->fetch( PDO::FETCH_ASSOC );
 
-        if ( $user && password_verify( $password, $user[ 'password' ] ) ) {
+        if ( $user && password_verify( $password, $user['password'] ) ) {
+            $user['first_name']    = $user['first_name'] ?? 'Usuario';
+            $user['profile_image'] = $user['profile_image'] ?? 'default-profile.png';
             return $user;
-            // Retorna el array con email, role_id, first_name y profile_image
         }
         return false;
     }
-
-    /**
-    * Actualiza la contraseña de un usuario mediante su email.
-    */
 
     public function updatePasswordByEmail( $email, $hashedPassword ) {
         $stmt = $this->db->prepare( 'UPDATE auth SET password = ? WHERE email = ?' );
         return $stmt->execute( [ $hashedPassword, $email ] );
     }
 
-    // --- SECCIÓN: RECUPERACIÓN DE CONTRASEÑA ( TOKENS ) ---
-
-    /**
-    * Guarda un token de recuperación, eliminando cualquier token previo del mismo email.
-    */
-
     public function savePasswordToken( $email, $token, $expires ) {
         try {
-            // 1. Limpiamos registros de recuperación antiguos para este usuario
             $stmtDel = $this->db->prepare( 'DELETE FROM password_resets WHERE email = ?' );
             $stmtDel->execute( [ $email ] );
 
-            // 2. Insertamos el nuevo token de seguridad
             $stmtIns = $this->db->prepare( 'INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)' );
             return $stmtIns->execute( [ $email, $token, $expires ] );
 
@@ -94,19 +64,11 @@ class User {
         }
     }
 
-    /**
-    * Valida si un token existe y no ha expirado.
-    */
-
     public function validateToken( $token ) {
         $stmt = $this->db->prepare( 'SELECT email FROM password_resets WHERE token = ? AND expires_at > NOW() LIMIT 1' );
         $stmt->execute( [ $token ] );
         return $stmt->fetch( PDO::FETCH_ASSOC );
     }
-
-    /**
-    * Elimina el token una vez que ya ha sido utilizado.
-    */
 
     public function deleteToken( $token ) {
         $stmt = $this->db->prepare( 'DELETE FROM password_resets WHERE token = ?' );

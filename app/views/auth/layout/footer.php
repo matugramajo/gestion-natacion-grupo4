@@ -1,6 +1,6 @@
 </main>
-<footer class="text-center mt-5 py-3 border-top">
-    <p>&copy; <?= date('Y') ?> - Aplicaciones WEB - Profesor lic. Juan Pablo Cesarini</p>
+<footer class="text-center">
+    <p>&copy; <?= date('Y') ?> - SwimManager</p>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
@@ -9,6 +9,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="module" src="<?= rtrim(Env::get('ASSET_URL'), '/') ?>/js/modules/authMain.js"></script>
+<script type="module" src="<?= rtrim(Env::get('ASSET_URL'), '/') ?>/js/modules/appMain.js"></script>
+
+<script>
+window.togglePassword = function(id) {
+    const input = document.getElementById(id);
+
+    if (!input) return;
+
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>
 </body>
 
 </html>

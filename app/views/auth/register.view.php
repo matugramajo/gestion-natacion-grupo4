@@ -1,5 +1,5 @@
 <style>
-
+/* todo tu CSS igual */
 .login-wrap{
     min-height:80vh;
     display:flex;
@@ -81,13 +81,15 @@
     <div class="login-card">
 
         <div class="login-logo">
-            <svg width="44" height="28" viewBox="0 0 34 22" fill="none" style="margin-bottom:8px">
-                <path d="M2 14c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#1a6cf6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M2 19c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#0bc5c5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <circle cx="17" cy="7" r="2.5" fill="#1a6cf6"/>
-            </svg>
-            <br>
-            <span>Swim<em>Manager</em></span>
+            <a href="?url=home" style="text-decoration:none; color:inherit;">
+                <svg width="44" height="28" viewBox="0 0 34 22" fill="none" style="margin-bottom:8px">
+                    <path d="M2 14c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#1a6cf6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <path d="M2 19c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#0bc5c5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <circle cx="17" cy="7" r="2.5" fill="#1a6cf6"/>
+                </svg>
+                <br>
+                <span>Swim<em>Manager</em></span>
+            </a>
         </div>
 
         <div class="login-title">
@@ -99,49 +101,69 @@
         </div>
 
         <form id="formRegister" method="POST" enctype="multipart/form-data">
+
             <div class="row">
                 <div class="col-md-6">
+
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
-                        <input type="text" name="first_name" class="form-control" placeholder="Ej: Juan" required>
+                        <input type="text" name="first_name" class="form-control" required>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" name="email" class="form-control" placeholder="juan@correo.com" required>
+                        <input type="email" name="email" class="form-control" required>
                     </div>
+
+                    <!-- 👁️ PASSWORD -->
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" name="password" class="form-control" placeholder="Mín. 6 caracteres" required>
+                        <div class="input-group">
+                            <input type="password" name="password" id="pass1" class="form-control" placeholder="Mín. 6 caracteres" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('pass1')">👁</button>
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Fecha de nacimiento</label>
                         <input type="date" name="birth_date" class="form-control" required>
                     </div>
+
                 </div>
 
                 <div class="col-md-6">
+
                     <div class="mb-3">
                         <label class="form-label">Apellido</label>
-                        <input type="text" name="last_name" class="form-control" placeholder="Ej: Pérez" required>
+                        <input type="text" name="last_name" class="form-control" required>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="text" name="phone" class="form-control" placeholder="11 1234 5678">
+                        <input type="text" name="phone" class="form-control">
                     </div>
+
+                    <!-- 👁️ CONFIRM PASSWORD -->
                     <div class="mb-3">
                         <label class="form-label">Confirmar contraseña</label>
-                        <input type="password" name="confirm_password" class="form-control" placeholder="Repetí tu contraseña" required>
+                        <div class="input-group">
+                            <input type="password" name="confirm_password" id="pass2" class="form-control" placeholder="Repetí tu contraseña" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('pass2')">👁</button>
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Foto de perfil</label>
                         <input type="file" name="profile_image" class="form-control" accept="image/*">
                     </div>
+
                 </div>
             </div>
 
             <button type="submit" class="btn-login mt-2">
                 Crear cuenta
             </button>
+
         </form>
 
         <div class="login-links">
@@ -153,5 +175,17 @@
 
     </div>
 </div>
+
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+</script>
 
 <?php include __DIR__ . '/layout/footer.php'; ?>
