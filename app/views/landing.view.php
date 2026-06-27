@@ -10,6 +10,7 @@
             background: linear-gradient(135deg, #e8f0fe 0%, #f0f9ff 50%, #e0f7fa 100%);
             display: flex;
             align-items: center;
+            overflow: hidden;
         }
 
         .hero-badge {
@@ -207,6 +208,11 @@
             color: #6b7280;
             padding: 32px 0;
             font-size: 14px;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
         }
 
         @media (max-width: 991.98px) {
