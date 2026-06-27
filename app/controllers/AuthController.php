@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../core/BaseController.php';
-require_once __DIR__ . '/../models/Auth.php';
-require_once __DIR__ . '/../models/Swimmer.php';
+// app/controllers/AuthController.php
+// Los require_once de modelos/core son innecesarios gracias al Autoloader.
 
 class AuthController extends BaseController {
     private $userModel;

@@ -71,14 +71,18 @@ body.panel-app {
     .panel-sidebar { display: flex !important; flex-direction: column; }
 }
 @media (max-width: 767.98px) {
-    .panel-main { margin-top: 0; }
+    .panel-main {
+        margin-top: var(--panel-mobile-header-height, 56px);
+        padding: 1rem 0.75rem calc(64px + env(safe-area-inset-bottom, 0px) + 1rem);
+    }
     .panel-sidebar { display: none !important; }
 }
 
 .panel-mobile-nav {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    height: 64px;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     background: var(--sm-bg);
     border-top: 1px solid var(--sm-border);
     z-index: 1030;
@@ -87,15 +91,21 @@ body.panel-app {
 @media (min-width: 768px) { .panel-mobile-nav { display: none !important; } }
 .panel-mobile-nav a {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 2px;
     color: var(--sm-muted);
     text-decoration: none;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     position: relative;
+    padding: 0 2px;
+}
+.panel-mobile-nav a .material-symbols-outlined {
+    font-size: 22px;
 }
 .panel-mobile-nav a.active { color: var(--sm-primary); background: rgba(26,108,246,.08); }
 .panel-mobile-nav a.active::before {
@@ -179,4 +189,54 @@ div:where(.swal2-container) button.swal2-confirm:hover {
 }
 div:where(.swal2-container) button.swal2-confirm:focus {
     box-shadow: 0 0 0 3px rgba(26, 108, 246, 0.45) !important;
+}
+
+/* ——— Mobile: tablas y contenido del panel ——— */
+@media (max-width: 767.98px) {
+    .hero-title { font-size: 1.75rem; }
+    .hero-sub { font-size: 1rem; }
+
+    .stat-card { padding: 1rem; }
+    .stat-card .stat-value { font-size: 1.5rem; }
+
+    .swimmer-stat-card { padding: 1.5rem; border-radius: 16px; }
+    .swimmer-stat-card .display-4 { font-size: 2.5rem; }
+
+    .table-panel th,
+    .table-panel td {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.8125rem;
+        white-space: nowrap;
+    }
+
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-responsive::after {
+        content: '';
+        display: block;
+        height: 1px;
+    }
+
+    .card-panel .d-flex.gap-2 {
+        flex-wrap: wrap;
+    }
+
+    .modal-dialog {
+        margin: 0.75rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .panel-main .btn-sm,
+    .panel-main .btn-sm-primary,
+    .panel-main .btn-sm-outline-primary {
+        font-size: 0.8125rem;
+    }
+
+    .panel-main .d-flex.flex-wrap.gap-2 .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
 }

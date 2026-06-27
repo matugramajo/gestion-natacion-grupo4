@@ -2,6 +2,10 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
+
+// Cargamos el autoloader primero para que todas las clases del proyecto
+// (core, models, controllers, services) se resuelvan automáticamente.
+require_once __DIR__ . '/../app/core/Autoloader.php';
 require_once __DIR__ . '/../app/core/Env.php';
 
 // index.php

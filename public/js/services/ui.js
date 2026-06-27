@@ -12,8 +12,22 @@ const SWAL_CANCEL = "#9ca3af";
 export const swal = Swal.mixin({
   confirmButtonColor: SWAL_PRIMARY,
   cancelButtonColor: SWAL_CANCEL,
-  showConfirmButton: false,
 });
+
+/** Diálogo de confirmación con ambos botones (no usa el mixin para evitar ocultar confirmar). */
+export function confirmDialog(message) {
+  return Swal.fire({
+    icon: "question",
+    title: "Confirmar",
+    text: message,
+    showConfirmButton: true,
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    confirmButtonColor: SWAL_PRIMARY,
+    cancelButtonColor: SWAL_CANCEL,
+  });
+}
 
 export const handleAlert = (status, message, redirectUrl = null, options = {}) => {
   const { silent = false } = options;

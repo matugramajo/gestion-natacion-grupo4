@@ -2,18 +2,15 @@
 
 /**
  * EL ENRUTADOR ( ROUTER ) - Front Controller Pattern
+ * Los require_once de controladores y clases del core se eliminaron
+ * gracias al autoloader registrado en app/core/Autoloader.php.
  */
-
-require_once __DIR__ . '/../app/config/db.php';
-require_once __DIR__ . '/../app/core/Env.php';
-require_once __DIR__ . '/../app/core/BaseController.php';
 
 $route = $_GET['url'] ?? 'home';
 
 switch ( $route ) {
 
     case 'home':
-        require_once __DIR__ . '/../app/controllers/HomeController.php';
         $controller = new HomeController();
         if ( !isset( $_SESSION['user_id'] ) ) {
             $controller->landing();
@@ -29,7 +26,6 @@ switch ( $route ) {
     case 'send-reset':
     case 'reset-password':
     case 'update-password':
-        require_once __DIR__ . '/../app/controllers/AuthController.php';
         $controller = new AuthController();
         if ( $route === 'login' )           $controller->showLogin();
         if ( $route === 'authenticate' )    $controller->authenticate();
@@ -41,7 +37,6 @@ switch ( $route ) {
         break;
 
     case 'swimmers':
-        require_once __DIR__ . '/../app/controllers/AuthController.php';
         ( new AuthController() )->index();
         break;
 
@@ -52,7 +47,6 @@ switch ( $route ) {
     case 'admin-update-coach':
     case 'admin-delete-coach':
     case 'admin-delete-swimmer':
-        require_once __DIR__ . '/../app/controllers/AdminController.php';
         $admin = new AdminController();
         if ( $route === 'admin-coaches' )        $admin->coaches();
         if ( $route === 'admin-store-coach' )    $admin->storeCoach();
@@ -66,7 +60,6 @@ switch ( $route ) {
     case 'admin-store-lesson':
     case 'admin-update-lesson':
     case 'admin-delete-lesson':
-        require_once __DIR__ . '/../app/controllers/AdminController.php';
         $admin = new AdminController();
         if ( $route === 'admin-lessons' )       $admin->lessons();
         if ( $route === 'admin-store-lesson' )  $admin->storeLesson();
@@ -78,7 +71,6 @@ switch ( $route ) {
     case 'coaches':
     case 'coaches/create':
     case 'coaches/store':
-        require_once __DIR__ . '/../app/controllers/CoachController.php';
         $controller = new CoachController();
         if ( $route === 'coaches' )         $controller->index();
         if ( $route === 'coaches/create' )  $controller->create();
@@ -90,7 +82,6 @@ switch ( $route ) {
     case 'coach-update-profile':
     case 'coach-update-password':
     case 'coach-students':
-        require_once __DIR__ . '/../app/controllers/CoachController.php';
         $coach = new CoachController();
         if ( $route === 'coach-profile' )          $coach->profile();
         if ( $route === 'coach-update-profile' )   $coach->updateProfile();
@@ -103,7 +94,6 @@ switch ( $route ) {
     case 'swimmer-update-profile':
     case 'swimmer-lessons':
     case 'swimmer-enroll':
-        require_once __DIR__ . '/../app/controllers/SwimmerController.php';
         $swimmer = new SwimmerController();
         if ( $route === 'swimmer-profile' )         $swimmer->profile();
         if ( $route === 'swimmer-update-profile' )  $swimmer->updateProfile();

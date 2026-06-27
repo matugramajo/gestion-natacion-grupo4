@@ -1,7 +1,6 @@
 <?php
 // app/core/BaseController.php
-
-require_once __DIR__ . '/Role.php';
+// Role.php se carga automáticamente mediante el Autoloader.
 
 class BaseController {
 

@@ -6,7 +6,7 @@
 </div>
 
 <div class="row g-4">
-    <div class="col-lg-5">
+    <div class="col-12 col-lg-5">
         <div class="card-panel p-4">
 
             <?php if ( isset( $editCoach ) ): ?>
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div class="col-lg-7">
+    <div class="col-12 col-lg-7">
         <div class="card-panel overflow-hidden">
             <div class="p-3 border-bottom"><h2 class="h5 fw-bold mb-0">Listado</h2></div>
             <div class="table-responsive">

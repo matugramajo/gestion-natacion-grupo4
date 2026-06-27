@@ -12,6 +12,22 @@ $isPanelNav = $navVariant === 'panel';
 ?>
 <?php if ( $isPanelNav ): ?>
 
+<header class="panel-mobile-header d-md-none">
+    <a href="?url=home" class="nav-logo">
+        <svg width="28" height="18" viewBox="0 0 34 22" fill="none" aria-hidden="true">
+            <path d="M2 14c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#1a6cf6" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <path d="M2 19c2-4 5-6 8-4s5 6 8 4 5-6 8-4" stroke="#0bc5c5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <circle cx="17" cy="7" r="2.5" fill="#1a6cf6"/>
+        </svg>
+        <span>Swim<em>Manager</em></span>
+    </a>
+    <div class="panel-mobile-header-actions">
+        <span class="panel-mobile-greeting">Hola, <?= $firstName ?></span>
+        <a href="?url=logout" class="btn-nav-logout btn-nav-logout-sm">Salir</a>
+        <?= ViewHelper::profileAvatar( $firstNameRaw, $lastNameRaw, $profileImage ) ?>
+    </div>
+</header>
+
 <nav class="nav-main nav-panel d-none d-md-flex align-items-center <?= htmlspecialchars( $navExtraClass ) ?>">
     <div class="nav-panel-bar">
         <div class="nav-panel-logo-zone">

@@ -1,4 +1,4 @@
-import { handleAlert, swal } from "../services/ui.js";
+import { confirmDialog, handleAlert } from "../services/ui.js";
 import { validatePanelForm } from "./panelValidators.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,14 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const confirmMsg = form.dataset.confirm;
       if (confirmMsg) {
-        const result = await swal.fire({
-          icon: "question",
-          title: "Confirmar",
-          text: confirmMsg,
-          showCancelButton: true,
-          confirmButtonText: "Sí",
-          cancelButtonText: "Cancelar",
-        });
+        const result = await confirmDialog(confirmMsg);
         if (!result.isConfirmed) return;
       }
 
