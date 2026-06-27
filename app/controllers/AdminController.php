@@ -1,10 +1,6 @@
 <?php
-require_once __DIR__ . '/../core/BaseController.php';
-require_once __DIR__ . '/../models/Auth.php';
-require_once __DIR__ . '/../models/Profile.php';
-require_once __DIR__ . '/../models/Coach.php';
-require_once __DIR__ . '/../models/Lesson.php';
-require_once __DIR__ . '/../models/Swimmer.php';
+// app/controllers/AdminController.php
+// Los require_once de modelos/core son innecesarios gracias al Autoloader.
 
 class AdminController extends BaseController {
     private $pdo;

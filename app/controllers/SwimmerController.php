@@ -1,9 +1,6 @@
 <?php
-require_once __DIR__ . '/../core/BaseController.php';
-require_once __DIR__ . '/../models/Profile.php';
-require_once __DIR__ . '/../models/Swimmer.php';
-require_once __DIR__ . '/../models/Lesson.php';
-require_once __DIR__ . '/../models/Booking.php';
+// app/controllers/SwimmerController.php
+// Los require_once de modelos/core son innecesarios gracias al Autoloader.
 
 class SwimmerController extends BaseController {
     private $pdo;

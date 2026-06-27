@@ -1,11 +1,6 @@
 <?php
-
-require_once __DIR__ . '/../core/BaseController.php';
-if ( !class_exists('Coach') )   require_once __DIR__ . '/../models/Coach.php';
-if ( !class_exists('Auth') )    require_once __DIR__ . '/../models/Auth.php';
-require_once __DIR__ . '/../models/Profile.php';
-require_once __DIR__ . '/../models/Lesson.php';
-require_once __DIR__ . '/../models/Booking.php';
+// app/controllers/CoachController.php
+// Los require_once de modelos/core son innecesarios gracias al Autoloader.
 
 class CoachController extends BaseController {
     private $coachModel;
