@@ -62,7 +62,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class='btn btn-success w-100 py-2'>
+                        <button type="submit" class='btn btn-primary w-100 py-2'>
                             Actualizar contraseña
                         </button>
 

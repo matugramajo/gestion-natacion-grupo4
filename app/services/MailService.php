@@ -42,9 +42,9 @@ class MailService
         </div>
 
         <div style='padding: 30px; text-align: center;'>
-            <h2 style='color: #333333;'>¿Olvidaste tu contraseña?</h2>
+            <h2 style='color: #333333;'>Recupera tu contraseña</h2>
             <p style='color: #666666; font-size: 16px;'>
-                No te preocupes, nos pasa a todos. Haz clic en el botón de abajo para elegir una nueva clave y volver al agua.
+                Hace clic en el botón de abajo para elegir una nueva clave y volver al agua.
             </p>
             
             <div style='margin: 30px 0;'>

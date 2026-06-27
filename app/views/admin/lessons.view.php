@@ -21,6 +21,7 @@ include __DIR__ . '/../auth/layout/panel-start.php';
         <div class="col-md-4 col-lg-2">
             <label class="form-label small">Nivel</label>
             <select name="level_id" class="form-select form-select-sm" required>
+                <option value="" disabled selected>Seleccione un nivel</option>
                 <?php foreach ( $levels as $lv ): ?>
                 <option value="<?= (int) $lv['id'] ?>"><?= htmlspecialchars( $lv['name'] ) ?></option>
                 <?php endforeach; ?>
@@ -98,6 +99,7 @@ include __DIR__ . '/../auth/layout/panel-start.php';
                     <div class="col-md-6">
                         <label class="form-label small">Nivel</label>
                         <select name="level_id" id="edit-level-id" class="form-select" required>
+                            <option value="" disabled>Seleccione un nivel</option>
                             <?php foreach ( $levels as $lv ): ?>
                             <option value="<?= (int) $lv['id'] ?>"><?= htmlspecialchars( $lv['name'] ) ?></option>
                             <?php endforeach; ?>
