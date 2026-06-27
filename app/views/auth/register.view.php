@@ -5,7 +5,7 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:24px 0;
+    padding:24px 16px;
 }
 
 .login-card{
@@ -13,8 +13,12 @@
     max-width:720px;
     background:#ffffff;
     border-radius:20px;
-    padding:35px;
+    padding:28px 20px;
     box-shadow:0 10px 30px rgba(0,0,0,.10);
+}
+
+@media (min-width: 576px) {
+    .login-card { padding:35px; }
 }
 
 .login-logo{

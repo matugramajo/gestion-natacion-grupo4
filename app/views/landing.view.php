@@ -208,13 +208,104 @@
             padding: 32px 0;
             font-size: 14px;
         }
+
+        @media (max-width: 991.98px) {
+            .hero {
+                min-height: auto;
+                padding: calc(var(--nav-height, 64px) + 2rem) 0 3rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(1.75rem, 6vw, 2.5rem);
+            }
+
+            .hero p.lead {
+                font-size: 16px;
+            }
+
+            .features,
+            .schedule,
+            .cta {
+                padding: 48px 0;
+            }
+
+            .features h2,
+            .schedule h2 {
+                font-size: 26px;
+            }
+
+            .cta h2 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-badge {
+                font-size: 11px;
+                padding: 4px 12px;
+            }
+
+            .btn-hero-main,
+            .btn-cta {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .schedule-table {
+                border-radius: 12px;
+            }
+
+            .schedule-table table thead {
+                display: none;
+            }
+
+            .schedule-table tbody tr {
+                display: block;
+                padding: 14px 16px;
+                border-bottom: 1px solid #f3f4f6;
+            }
+
+            .schedule-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .schedule-table tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 5px 0;
+                border: none;
+                text-align: right;
+            }
+
+            .schedule-table tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                font-size: 12px;
+                color: #6b7280;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                text-align: left;
+                flex-shrink: 0;
+            }
+
+            .footer-landing {
+                text-align: center;
+                padding: 24px 0;
+            }
+        }
     </style>
 
 <section class="hero">
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <div class="hero-badge">Plataforma oficial</div>
                 <h1>Tu pasión por el agua, <em>gestionada con excelencia</em></h1>
                 <p class="lead">Descubrí la escuela de natación que combina técnica profesional, instalaciones de primera clase y una plataforma intuitiva para gestionar tu progreso acuático.</p>
                 <div class="d-flex gap-3 flex-wrap">
@@ -285,14 +376,14 @@
                     <tr><td colspan="4" class="text-center text-muted py-4">Próximamente publicaremos el cronograma.</td></tr>
                     <?php else: foreach ( $schedule as $row ): ?>
                     <tr>
-                        <td>
+                        <td data-label="Nivel">
                             <span class="level-badge <?= $levelBadge[ (int) $row['level_id'] ] ?? 'level-prin' ?>">
                                 <?= htmlspecialchars( $row['level_name'] ) ?>
                             </span>
                         </td>
-                        <td><?= Lesson::dayLabel( $row['day_of_week'] ) ?></td>
-                        <td><?= substr( $row['start_time'], 0, 5 ) ?> a <?= substr( $row['end_time'], 0, 5 ) ?></td>
-                        <td>Prof. <?= htmlspecialchars( trim( ( $row['coach_first_name'] ?? '' ) . ' ' . ( $row['coach_last_name'] ?? '' ) ) ) ?></td>
+                        <td data-label="Día"><?= Lesson::dayLabel( $row['day_of_week'] ) ?></td>
+                        <td data-label="Horario"><?= substr( $row['start_time'], 0, 5 ) ?> a <?= substr( $row['end_time'], 0, 5 ) ?></td>
+                        <td data-label="Entrenador">Prof. <?= htmlspecialchars( trim( ( $row['coach_first_name'] ?? '' ) . ' ' . ( $row['coach_last_name'] ?? '' ) ) ) ?></td>
                     </tr>
                     <?php endforeach; endif; ?>
                 </tbody>

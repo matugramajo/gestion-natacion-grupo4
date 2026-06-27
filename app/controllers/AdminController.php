@@ -258,12 +258,12 @@ class AdminController extends BaseController {
 
         $id = (int) ( $_POST['id'] ?? 0 );
         if ( !$id ) {
-            return $this->json( 'warning', 'Nadador no válido.' );
+            return $this->json( 'warning', 'Nadador no válido.', Env::get( 'APP_URL' ) . '/?url=swimmers' );
         }
 
         if ( $this->swimmerModel->softDelete( $id ) ) {
-            return $this->json( 'success', 'Nadador eliminado.', '?url=swimmers' );
+            return $this->json( 'success', 'Nadador eliminado.', Env::get( 'APP_URL' ) . '/?url=swimmers' );
         }
-        return $this->json( 'error', 'No se pudo eliminar al nadador.' );
+        return $this->json( 'error', 'No se pudo eliminar al nadador.', Env::get( 'APP_URL' ) . '/?url=swimmers' );
     }
 }

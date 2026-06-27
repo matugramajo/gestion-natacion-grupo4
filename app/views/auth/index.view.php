@@ -15,7 +15,7 @@
                     <td><?= htmlspecialchars( $s['phone'] ?? '-' ) ?></td>
                     <td><?= htmlspecialchars( $s['address'] ?? '-' ) ?></td>
                     <td>
-                        <form class="ajax-form d-inline" data-action="?url=admin-delete-swimmer" data-confirm="¿Eliminar a <?= htmlspecialchars( $s['first_name'] ) ?>?">
+                        <form class="ajax-form d-inline" method="post" action="?url=admin-delete-swimmer" data-action="?url=admin-delete-swimmer" data-confirm="¿Eliminar a <?= htmlspecialchars( $s['first_name'] ) ?>?">
                             <input type="hidden" name="id" value="<?= (int) $s['id'] ?>">
                             <button type="submit" class="btn btn-link btn-sm text-danger p-0">Eliminar</button>
                         </form>

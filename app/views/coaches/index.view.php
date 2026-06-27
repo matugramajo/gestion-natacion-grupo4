@@ -96,10 +96,23 @@ include __DIR__ . '/../auth/layout/panel-start.php';
         padding: 40px;
         font-size: 15px;
     }
+
+    @media (max-width: 767.98px) {
+        .coaches-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+        .coaches-page-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .coaches-page-header .btn {
+            width: 100%;
+        }
+    }
 </style>
 
 <div class="card-panel p-4">
-    <div class="d-flex justify-content-between align-items-start mb-2">
+    <div class="d-flex justify-content-between align-items-start mb-2 coaches-page-header">
         <div>
             <h1 class="h3 fw-bold mb-0">Profesores</h1>
             <p class="text-muted small mb-0"><?= count($coaches) ?> profesores registrados</p>
@@ -107,6 +120,7 @@ include __DIR__ . '/../auth/layout/panel-start.php';
         <a href="?url=coaches/create" class="btn btn-sm-primary">Agregar profesor</a>
     </div>
 
+    <div class="coaches-table-wrap">
     <table class="coaches-table">
         <thead>
             <tr>
@@ -155,6 +169,7 @@ include __DIR__ . '/../auth/layout/panel-start.php';
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <?php include __DIR__ . '/../auth/layout/panel-end.php'; ?>

@@ -50,14 +50,14 @@ include __DIR__ . '/auth/layout/panel-start.php';
 </div>
 
 <div class="row g-4">
-    <div class="col-md-3">
+    <div class="col-12 col-md-3">
         <div class="card-panel stat-card h-100">
             <h2 class="h5 fw-bold mb-4">Mis clases</h2>
             <span class="stat-value text-primary"><?= count( $coachLessons ) ?></span>
             <span class="text-muted ms-2">activas</span>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-12 col-md-8">
         <div class="card-panel p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="h5 fw-bold mb-0">Próximas clases</h3>
@@ -89,7 +89,7 @@ include __DIR__ . '/auth/layout/panel-start.php';
 <?php else: ?>
 
 <div class="row g-4 mb-4">
-    <div class="col-lg-8">
+    <div class="col-12 col-lg-8">
         <div class="card-panel p-4 p-md-5 h-100">
             <h2 class="h3 fw-bold mb-2">Hola, <?= htmlspecialchars( $firstName ) ?></h2>
             <p class="hero-sub mb-4">¿Listo para tu próximo entrenamiento?</p>
@@ -103,7 +103,7 @@ include __DIR__ . '/auth/layout/panel-start.php';
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-12 col-lg-4">
         <div class="swimmer-stat-card h-100 d-flex flex-column justify-content-center">
             <span class="material-symbols-outlined icon-fill mb-2" style="font-size:48px;opacity:.85">assignment_turned_in</span>
             <div class="display-4 fw-bold"><?= count( $myBookings ) ?></div>
